@@ -16,7 +16,7 @@ namespace H.NSwag.Generator.IntegrationTests.IntegrationTests
             File.WriteAllText(path, text);
 
             var source = NSwagGeneratorCore.Generate(
-                @"C:\Program Files (x86)\Rico Suter\NSwagStudio\Net50\dotnet-nswag.exe",
+                @"%USERPROFILE%/.nuget/packages/nswag.msbuild/13.9.4/tools/Net50/dotnet-nswag.exe",
                 path, 
                 @"%TEMP%/H.NSwag.Generator/Generated.cs");
 

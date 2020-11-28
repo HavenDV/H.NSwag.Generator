@@ -10,6 +10,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="NSwag.MSBuild" Version="13.9.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\libs\H.NSwag.Generator.Core\H.NSwag.Generator.Core.csproj" />
   </ItemGroup>
 

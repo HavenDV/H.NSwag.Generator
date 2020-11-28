@@ -13,7 +13,7 @@ namespace H.NSwag.Generator
             generatedPath = generatedPath ?? throw new ArgumentNullException(nameof(generatedPath));
 
             using var process = Process.Start(new ProcessStartInfo(
-                consolePath,
+                Environment.ExpandEnvironmentVariables(consolePath),
                 $"run \"{nswagPath}\"")
             {
                 CreateNoWindow = true,
