@@ -10,6 +10,7 @@
   <PropertyGroup Label="NuGet">
     <Version>1.0.0</Version>
     <DevelopmentDependency>true</DevelopmentDependency>
+    <IncludeSymbols>false</IncludeSymbols>
     <Description>C# 9 Source Generator NuGet library for NSwag.</Description>
     <PackageTags>nswag, generator, source generator, csharp 9</PackageTags>
     <PackageReleaseNotes>Initial release.</PackageReleaseNotes>
