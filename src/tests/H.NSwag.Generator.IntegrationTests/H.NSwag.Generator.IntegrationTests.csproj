@@ -1,11 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net5.0;net4.8</TargetFrameworks>
+    <TargetFrameworks>net4.8;net5.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\libs\H.NSwag.Generator\H.NSwag.Generator.csproj" />
+    <None Remove="Data\*.*" />
+    <EmbeddedResource Include="Data\*.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\libs\H.NSwag.Generator.Core\H.NSwag.Generator.Core.csproj" />
   </ItemGroup>
 
 </Project>
