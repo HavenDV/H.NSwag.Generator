@@ -11,27 +11,20 @@ Description
 
 [![NuGet](https://img.shields.io/nuget/dt/H.NSwag.Generator.svg?style=flat-square&label=H.NSwag.Generator)](https://www.nuget.org/packages/H.NSwag.Generator/)
 
-```
-Install-Package H.NSwag.Generator
-```
 
 ### Usage
 
-** Note: NSwagGeneratedPath is the same as specified in the .nswag Output property. **
+```
+Install-Package H.NSwag.Generator
+Install-Package NSwag.MSBuild
+```
+
+**Note: NSwagGeneratedPath is the same as specified in the .nswag Output property.**
 ```xml
-
-  <ItemGroup>
-    <PackageReference Include="NSwag.MSBuild" Version="13.9.4">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-
-  <PropertyGroup>
-    <NSwagConsolePath>$(NSwagExe_Net50)</NSwagConsolePath>
-    <NSwagGeneratedPath>%TEMP%\H.NSwag.Generator\Generated.cs</NSwagGeneratedPath>
-  </PropertyGroup>
-
+<PropertyGroup>
+  <NSwagConsolePath>$(NSwagExe_Net50)</NSwagConsolePath>
+  <NSwagGeneratedPath>%TEMP%\H.NSwag.Generator\Generated.cs</NSwagGeneratedPath>
+</PropertyGroup>
 ```
 
 ### Contacts
