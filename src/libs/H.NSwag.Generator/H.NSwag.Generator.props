@@ -1,0 +1,8 @@
+﻿<Project>
+
+  <ItemGroup>
+    <CompilerVisibleProperty Include="NSwagConsolePath" />
+    <CompilerVisibleProperty Include="NSwagGeneratedPath" />
+  </ItemGroup>
+
+</Project>

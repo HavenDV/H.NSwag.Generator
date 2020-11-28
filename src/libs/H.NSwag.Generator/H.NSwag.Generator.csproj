@@ -3,13 +3,23 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <LangVersion>preview</LangVersion>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Label="NuGet">
     <Version>0.9.0</Version>
-    <Description>Description</Description>
+    <DevelopmentDependency>true</DevelopmentDependency>
+    <Description>C# 9 Source Generator NuGet library for NSwag.</Description>
+    <PackageTags>nswag, generator, source generator, csharp 9</PackageTags>
     <PackageReleaseNotes>Initial release.</PackageReleaseNotes>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(SolutionDir)src\libs\H.NSwag.Generator\bin\$(Configuration)\netstandard2.0\H.NSwag.Generator.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    <None Include="$(SolutionDir)src\libs\H.NSwag.Generator.Core\bin\$(Configuration)\netstandard2.0\H.NSwag.Generator.Core.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    <None Include="H.NSwag.Generator.props" Pack="true" PackagePath="build" Visible="false" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.1">
