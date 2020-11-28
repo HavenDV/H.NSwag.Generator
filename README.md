@@ -17,11 +17,22 @@ Install-Package H.NSwag.Generator
 
 ### Usage
 
-```cs
-// code
-```
+** Note: NSwagGeneratedPath is the same as specified in the .nswag Output property. **
+```xml
 
-### Used documentation
+  <ItemGroup>
+    <PackageReference Include="NSwag.MSBuild" Version="13.9.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <NSwagConsolePath>$(NSwagExe_Net50)</NSwagConsolePath>
+    <NSwagGeneratedPath>%TEMP%\H.NSwag.Generator\Generated.cs</NSwagGeneratedPath>
+  </PropertyGroup>
+
+```
 
 ### Contacts
 * [mail](mailto:havendv@gmail.com)
