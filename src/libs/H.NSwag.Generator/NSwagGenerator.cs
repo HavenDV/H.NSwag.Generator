@@ -22,12 +22,8 @@ namespace H.NSwag.Generator
                 context,
                 "NSwagConsolePath",
                 @"C:\Program Files (x86)\Rico Suter\NSwagStudio\Net50\dotnet-nswag.exe");
-            var generatedPath = GetGlobalOption(
-                context,
-                "NSwagGeneratedPath",
-                @"%TEMP%/H.NSwag.Generator/Generated.cs");
 
-            var code = NSwagGeneratorCore.Generate(consolePath, file.Path, generatedPath);
+            var code = NSwagGeneratorCore.Generate(consolePath, file.Path);
 
             context.AddSource("NSwag Generated CSharp Code", SourceText.From(code, Encoding.UTF8));
         }
