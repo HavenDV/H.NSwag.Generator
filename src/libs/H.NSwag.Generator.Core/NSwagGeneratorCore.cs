@@ -14,7 +14,7 @@ namespace H.NSwag.Generator
             nswagPath = nswagPath ?? throw new ArgumentNullException(nameof(nswagPath));
 
             var nswagTempPath = $"{Path.GetTempFileName()}.nswag";
-            var outputPath = $"{Path.GetTempFileName()}.cs";
+            var outputPath = $"{Path.GetTempFileName()}.cs".Replace('\\', '/');
 
             try
             {
@@ -24,9 +24,15 @@ namespace H.NSwag.Generator
                 var outputIndex = nswagContents.ExtractAllIndexes("\"output\": \"", "\"").Last();
                 nswagContents = nswagContents
                     .Remove(outputIndex.Start, outputIndex.Length)
-                    .Insert(outputIndex.Start, outputPath.Replace('\\', '/'));
+                    .Insert(outputIndex.Start, outputPath);
 
                 File.WriteAllText(nswagTempPath, nswagContents);
+
+                if (!consolePath.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
+                {
+                    throw new InvalidOperationException(
+                        "The path to the console application must contain the path to the .exe file.");
+                }
 
                 using var process = Process.Start(new ProcessStartInfo(
                     Environment.ExpandEnvironmentVariables(consolePath),

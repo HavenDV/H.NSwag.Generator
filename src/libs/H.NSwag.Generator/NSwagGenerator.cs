@@ -18,10 +18,12 @@ namespace H.NSwag.Generator
                                file.Path.EndsWith(".nswag", StringComparison.InvariantCultureIgnoreCase))
                        ?? throw new InvalidOperationException(".nswag file is not found.");
 
-            var consolePath = GetGlobalOption(
-                context,
-                "NSwagConsolePath",
-                GetGlobalOption(context, "NSwagExe_Net50", @"C:\Program Files (x86)\Rico Suter\NSwagStudio\Net50\dotnet-nswag.exe"));
+            var defaultConsolePath = GetGlobalOption(context, "NSwagDir_Net50");
+            defaultConsolePath = string.IsNullOrWhiteSpace(defaultConsolePath)
+                ? @"C:\Program Files (x86)\Rico Suter\NSwagStudio\Net50\dotnet-nswag.exe"
+                : $"{defaultConsolePath}dotnet-nswag.exe";
+
+            var consolePath = GetGlobalOption(context, "NSwagConsolePath", defaultConsolePath);
 
             var code = NSwagGeneratorCore.Generate(consolePath, file.Path);
 
