@@ -2,7 +2,7 @@
 
   <ItemGroup>
     <CompilerVisibleProperty Include="NSwagConsolePath" />
-    <CompilerVisibleProperty Include="NSwagGeneratedPath" />
+    <CompilerVisibleProperty Include="NSwagExe_Net50" />
   </ItemGroup>
 
 </Project>

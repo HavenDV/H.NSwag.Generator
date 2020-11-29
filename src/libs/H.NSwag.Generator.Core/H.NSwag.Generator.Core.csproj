@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup Label="NuGet">
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <Description>C# 9 Source Generator NuGet library for NSwag.</Description>
     <PackageTags>nswag, generator, source generator, csharp 9</PackageTags>
     <PackageReleaseNotes>Deleted NSwagGeneratedPath.</PackageReleaseNotes>
