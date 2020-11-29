@@ -2,6 +2,11 @@
 
   <ItemGroup>
     <CompilerVisibleProperty Include="NSwagConsolePath" />
+    <CompilerVisibleProperty Include="NSwagDir" />
+    <CompilerVisibleProperty Include="NSwagDir_Core21" />
+    <CompilerVisibleProperty Include="NSwagDir_Core22" />
+    <CompilerVisibleProperty Include="NSwagDir_Core30" />
+    <CompilerVisibleProperty Include="NSwagDir_Core31" />
     <CompilerVisibleProperty Include="NSwagDir_Net50" />
   </ItemGroup>
 
