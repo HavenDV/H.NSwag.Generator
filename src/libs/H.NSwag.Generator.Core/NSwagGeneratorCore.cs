@@ -21,6 +21,8 @@ namespace H.NSwag.Generator
                 File.Copy(nswagPath, nswagTempPath, true);
 
                 var nswagContents = File.ReadAllText(nswagTempPath);
+
+                nswagContents = nswagContents.Replace("\"output\": null,", "\"output\": \"\",");
                 var outputIndex = nswagContents.ExtractAllIndexes("\"output\": \"", "\"").Last();
                 nswagContents = nswagContents
                     .Remove(outputIndex.Start, outputIndex.Length)
