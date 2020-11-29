@@ -27,12 +27,13 @@ namespace H.NSwag.Generator
                 "NetCore22" => "NSwagDir_Core22",
                 "NetCore30" => "NSwagDir_Core30",
                 "NetCore31" => "NSwagDir_Core31",
-                "Net50" => "NSwagDir_Net50",
+                "Net50" or "Default" => "NSwagDir_Net50",
                 _ => throw new InvalidOperationException($"Invalid runtime: {runtime}"),
             };
             var programFilesSubDir = runtime switch
             {
                 "WinX64" or "WinX86" => "Win",
+                "Default" => "Net50",
                 _ => runtime,
             };
             var exeName = runtime switch
