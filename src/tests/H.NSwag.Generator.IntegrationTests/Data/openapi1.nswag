@@ -91,7 +91,7 @@
       "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "%TEMP%/H.NSwag.Generator/Generated.cs",
+      "output": "",
       "newLineBehavior": "Auto"
     }
   }

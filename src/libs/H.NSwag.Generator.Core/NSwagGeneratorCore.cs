@@ -16,6 +16,7 @@ namespace H.NSwag.Generator
             var nswagTempPath = $"{Path.GetTempFileName()}.nswag";
             var outputPath = $"{Path.GetTempFileName()}.cs".Replace('\\', '/');
 
+            var output = string.Empty;
             try
             {
                 File.Copy(nswagPath, nswagTempPath, true);
@@ -42,11 +43,18 @@ namespace H.NSwag.Generator
                 {
                     CreateNoWindow = true,
                     UseShellExecute = false,
+                    RedirectStandardOutput = true,
                 });
 
                 process?.WaitForExit();
 
+                output = process?.StandardOutput.ReadToEnd();
+
                 return File.ReadAllText(outputPath);
+            }
+            catch (FileNotFoundException)
+            {
+                throw new InvalidOperationException($"NSwag console error: {output}");
             }
             finally
             {
