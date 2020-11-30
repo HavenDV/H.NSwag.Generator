@@ -12,13 +12,6 @@
     <PackageIcon>nuget_icon.png</PackageIcon>
   </PropertyGroup>
 
-  <PropertyGroup Label="NuGet">
-    <Version>1.0.8</Version>
-    <Description>C# 9 Source Generator NuGet library for NSwag.</Description>
-    <PackageTags>nswag, generator, source generator, csharp 9</PackageTags>
-    <PackageReleaseNotes>Added runtime auto-detect.</PackageReleaseNotes>
-  </PropertyGroup>
-
   <ItemGroup Label="Nuget">
     <None Include="$(SolutionDir)assets\nuget_icon.png">
       <Pack>True</Pack>
