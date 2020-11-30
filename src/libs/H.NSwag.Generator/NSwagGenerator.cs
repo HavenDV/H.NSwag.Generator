@@ -15,8 +15,8 @@ namespace H.NSwag.Generator
         public void Execute(GeneratorExecutionContext context)
         {
             var file = context.AdditionalFiles
-                           .FirstOrDefault(file =>
-                               file.Path.EndsWith(".nswag", StringComparison.InvariantCultureIgnoreCase))
+                           .FirstOrDefault(text =>
+                               text.Path.EndsWith(".nswag", StringComparison.InvariantCultureIgnoreCase))
                        ?? throw new InvalidOperationException(".nswag file is not found.");
 
             var runtime = file.GetText()?.ToString().ExtractAll("\"runtime\": \"", "\"").First();

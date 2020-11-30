@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <None Include="$(SolutionDir)src\libs\H.NSwag.Generator\bin\$(Configuration)\netstandard2.0\H.NSwag.Generator.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-    <None Include="$(SolutionDir)src\libs\H.NSwag.Generator.Core\bin\$(Configuration)\netstandard2.0\H.NSwag.Generator.Core.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
     <None Include="H.NSwag.Generator.props" Pack="true" PackagePath="build" />
   </ItemGroup>
 
@@ -23,10 +22,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.8.0" PrivateAssets="all" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\H.NSwag.Generator.Core\H.NSwag.Generator.Core.csproj" />
   </ItemGroup>
 
 </Project>

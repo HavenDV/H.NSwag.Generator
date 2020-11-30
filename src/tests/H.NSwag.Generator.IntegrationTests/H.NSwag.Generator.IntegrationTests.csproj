@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\libs\H.NSwag.Generator.Core\H.NSwag.Generator.Core.csproj" />
+    <ProjectReference Include="..\..\libs\H.NSwag.Generator\H.NSwag.Generator.csproj" />
   </ItemGroup>
 
 </Project>

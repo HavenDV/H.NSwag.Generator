@@ -23,8 +23,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H.NSwag.Generator.Core", "src\libs\H.NSwag.Generator.Core\H.NSwag.Generator.Core.csproj", "{B5A37AFB-1287-4A2E-8B0F-369E17726AB9}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H.NSwag.Generator.IntegrationTests", "src\tests\H.NSwag.Generator.IntegrationTests\H.NSwag.Generator.IntegrationTests.csproj", "{3B17FE3E-7DFC-4008-8F3C-492D215A5EBD}"
 EndProject
 Global
@@ -37,10 +35,6 @@ Global
 		{8C39C5CD-A8D1-4528-9FCE-0190BD515466}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C39C5CD-A8D1-4528-9FCE-0190BD515466}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C39C5CD-A8D1-4528-9FCE-0190BD515466}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B5A37AFB-1287-4A2E-8B0F-369E17726AB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B5A37AFB-1287-4A2E-8B0F-369E17726AB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B5A37AFB-1287-4A2E-8B0F-369E17726AB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B5A37AFB-1287-4A2E-8B0F-369E17726AB9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3B17FE3E-7DFC-4008-8F3C-492D215A5EBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3B17FE3E-7DFC-4008-8F3C-492D215A5EBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B17FE3E-7DFC-4008-8F3C-492D215A5EBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,7 +45,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8C39C5CD-A8D1-4528-9FCE-0190BD515466} = {6E5BF389-3D3F-4D74-9DD0-3B199CB529C5}
-		{B5A37AFB-1287-4A2E-8B0F-369E17726AB9} = {6E5BF389-3D3F-4D74-9DD0-3B199CB529C5}
 		{3B17FE3E-7DFC-4008-8F3C-492D215A5EBD} = {9CAA231D-7BE1-46C9-ACD6-EB2E569CEBEA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
