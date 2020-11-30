@@ -14,45 +14,63 @@ namespace H.NSwag.Generator
 
         public void Execute(GeneratorExecutionContext context)
         {
-            var file = context.AdditionalFiles
-                           .FirstOrDefault(text =>
-                               text.Path.EndsWith(".nswag", StringComparison.InvariantCultureIgnoreCase))
-                       ?? throw new InvalidOperationException(".nswag file is not found.");
-
-            var runtime = file.GetText()?.ToString().ExtractAll("\"runtime\": \"", "\"").First();
-            var defaultDirectoryOptionName = runtime switch
+            try
             {
-                "WinX64" or "WinX86" => "NSwagDir",
-                "NetCore21" => "NSwagDir_Core21",
-                "NetCore22" => "NSwagDir_Core22",
-                "NetCore30" => "NSwagDir_Core30",
-                "NetCore31" => "NSwagDir_Core31",
-                "Net50" or "Default" => "NSwagDir_Net50",
-                _ => throw new InvalidOperationException($"Invalid runtime: {runtime}"),
-            };
-            var programFilesSubDir = runtime switch
+                var file = context.AdditionalFiles
+                               .FirstOrDefault(text =>
+                                   text.Path.EndsWith(".nswag", StringComparison.InvariantCultureIgnoreCase))
+                           ?? throw new InvalidOperationException(".nswag file is not found.");
+
+                var runtime = file.GetText()?.ToString().ExtractAll("\"runtime\": \"", "\"").First();
+                var defaultDirectoryOptionName = runtime switch
+                {
+                    "WinX64" or "WinX86" => "NSwagDir",
+                    "NetCore21" => "NSwagDir_Core21",
+                    "NetCore22" => "NSwagDir_Core22",
+                    "NetCore30" => "NSwagDir_Core30",
+                    "NetCore31" => "NSwagDir_Core31",
+                    "Net50" or "Default" => "NSwagDir_Net50",
+                    _ => throw new InvalidOperationException($"Invalid runtime: {runtime}"),
+                };
+                var programFilesSubDir = runtime switch
+                {
+                    "WinX64" or "WinX86" => "Win",
+                    "Default" => "Net50",
+                    _ => runtime,
+                };
+                var exeName = runtime switch
+                {
+                    "WinX86" => "NSwag.x86.exe",
+                    "WinX64" => "NSwag.exe",
+                    _ => "dotnet-nswag.exe",
+                };
+
+                var defaultConsolePath = GetGlobalOption(context, defaultDirectoryOptionName);
+                defaultConsolePath = string.IsNullOrWhiteSpace(defaultConsolePath)
+                    ? @$"C:\Program Files (x86)\Rico Suter\NSwagStudio\{programFilesSubDir}\{exeName}"
+                    : $"{defaultConsolePath}{exeName}";
+
+                var consolePath = GetGlobalOption(context, "NSwagConsolePath", defaultConsolePath);
+
+                var code = NSwagGeneratorCore.Generate(consolePath, file.Path);
+
+                context.AddSource("NSwag Generated CSharp Code", SourceText.From(code, Encoding.UTF8));
+            }
+#pragma warning disable CA1031 // Do not catch general exception types
+            catch (Exception exception)
+#pragma warning restore CA1031 // Do not catch general exception types
             {
-                "WinX64" or "WinX86" => "Win",
-                "Default" => "Net50",
-                _ => runtime,
-            };
-            var exeName = runtime switch
-            {
-                "WinX86" => "NSwag.x86.exe",
-                "WinX64" => "NSwag.exe",
-                _ => "dotnet-nswag.exe",
-            };
-
-            var defaultConsolePath = GetGlobalOption(context, defaultDirectoryOptionName);
-            defaultConsolePath = string.IsNullOrWhiteSpace(defaultConsolePath)
-                ? @$"C:\Program Files (x86)\Rico Suter\NSwagStudio\{programFilesSubDir}\{exeName}"
-                : $"{defaultConsolePath}{exeName}";
-
-            var consolePath = GetGlobalOption(context, "NSwagConsolePath", defaultConsolePath);
-
-            var code = NSwagGeneratorCore.Generate(consolePath, file.Path);
-
-            context.AddSource("NSwag Generated CSharp Code", SourceText.From(code, Encoding.UTF8));
+                context.ReportDiagnostic(
+                    Diagnostic.Create(
+                        new DiagnosticDescriptor(
+                            "NSG0001",
+                            "Exception: ",
+                            $"{exception}",
+                            "Usage",
+                            DiagnosticSeverity.Error,
+                            true),
+                        Location.None));
+            }
         }
 
         public void Initialize(GeneratorInitializationContext context)
