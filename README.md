@@ -13,15 +13,19 @@ Generation via temp file is used here.
 
 ### Usage
 
-```
-Install-Package H.NSwag.Generator
-Install-Package NSwag.MSBuild
-```
-
 ```xml
-<ItemGroup>
-  <AdditionalFiles Include="openapi.nswag" />
-</ItemGroup>
+  <ItemGroup Label="Code Generation">
+    <AdditionalFiles Include="openapi.nswag" />
+
+    <PackageReference Include="H.NSwag.Generator" Version="1.0.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="NSwag.MSBuild" Version="13.9.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
 ```
 
 ### Advanced usage
