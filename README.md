@@ -17,7 +17,7 @@ Generation via temp file is used here.
   <ItemGroup Label="Code Generation">
     <AdditionalFiles Include="openapi.nswag" />
 
-    <PackageReference Include="H.NSwag.Generator" Version="1.0.9">
+    <PackageReference Include="H.NSwag.Generator" Version="1.0.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
