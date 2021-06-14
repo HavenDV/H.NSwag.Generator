@@ -5,11 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Data\*.*" />
     <EmbeddedResource Include="Data\*.*" />
+    <AdditionalFiles Include="Data\*.*" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="H.Resources.Generator" Version="1.1.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.10.0" />
     <PackageReference Include="NSwag.MSBuild" Version="13.11.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

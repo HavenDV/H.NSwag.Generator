@@ -1,18 +1,16 @@
 using System;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using H.NSwag.Generator.IntegrationTests.Utilities;
 
-namespace H.NSwag.Generator.IntegrationTests.IntegrationTests
+namespace H.NSwag.Generator.IntegrationTests
 {
     [TestClass]
     public class NSwagGeneratorTests
     {
-        [DataTestMethod]
-        [DataRow("openapi1.nswag")]
-        public void GenerateTest(string name)
+        [TestMethod]
+        public void GenerateTest()
         {
-            var text = ResourcesUtilities.ReadFileAsString(name);
+            var text = H.Resources.openapi1;
             var path = Path.GetTempFileName();
             File.WriteAllText(path, text);
 
@@ -23,13 +21,12 @@ namespace H.NSwag.Generator.IntegrationTests.IntegrationTests
             Console.WriteLine(source);
         }
 
-        [DataTestMethod]
-        [DataRow("openapi2.nswag")]
-        public void GenerateFailedTest(string name)
+        [TestMethod]
+        public void GenerateFailedTest()
         {
             var exception = Assert.ThrowsException<InvalidOperationException>(() =>
             {
-                var text = ResourcesUtilities.ReadFileAsString(name);
+                var text = H.Resources.openapi2;
                 var path = Path.GetTempFileName();
                 File.WriteAllText(path, text);
 
