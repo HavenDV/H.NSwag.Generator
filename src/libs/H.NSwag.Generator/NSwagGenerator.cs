@@ -58,9 +58,7 @@ namespace H.NSwag.Generator
 
                 context.AddSource("NSwag Generated CSharp Code", SourceText.From(code, Encoding.UTF8));
             }
-#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception exception)
-#pragma warning restore CA1031 // Do not catch general exception types
             {
                 context.ReportDiagnostic(
                     Diagnostic.Create(
