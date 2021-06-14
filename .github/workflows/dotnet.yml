@@ -43,6 +43,9 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release
     
+    - name: Build 2 (To include CopyLocalLockFileAssemblies)
+      run: dotnet build --configuration Release
+    
     - name: Run tests
       run: dotnet test --configuration Release
         
