@@ -104,7 +104,7 @@ namespace H.NSwag.Generator
                     ? "dotnet"
                     : Environment.ExpandEnvironmentVariables(consolePath);
                 var arguments = isDll
-                    ? $"{Environment.ExpandEnvironmentVariables(consolePath)} run {nswagTempPath}"
+                    ? $"{Environment.ExpandEnvironmentVariables(consolePath)} run \"{nswagTempPath}\""
                     : $"run \"{nswagTempPath}\"";
                 using var process = Process.Start(new ProcessStartInfo(fileName, arguments)
                 {
