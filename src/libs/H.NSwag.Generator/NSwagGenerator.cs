@@ -81,7 +81,11 @@ namespace H.NSwag.Generator
             consolePath = consolePath ?? throw new ArgumentNullException(nameof(consolePath));
             nswagPath = nswagPath ?? throw new ArgumentNullException(nameof(nswagPath));
 
-            var nswagTempPath = $"{Path.GetTempFileName()}.nswag";
+            var nswagTempDir = $"{Path.GetTempFileName().Replace(".tmp", string.Empty)}";
+            Directory.CreateDirectory(nswagTempDir);
+            Directory.SetCurrentDirectory(nswagTempDir);
+
+            var nswagTempPath = Path.Combine(nswagTempDir, "temp.nswag");
             var outputPath = $"{Path.GetTempFileName()}.cs".Replace('\\', '/');
 
             try
@@ -103,8 +107,8 @@ namespace H.NSwag.Generator
                     ? "dotnet"
                     : Environment.ExpandEnvironmentVariables(consolePath);
                 var arguments = isDll
-                    ? $"\"{Environment.ExpandEnvironmentVariables(consolePath)}\" run \"{nswagTempPath}\""
-                    : $"run \"{nswagTempPath}\"";
+                    ? $"\"{Environment.ExpandEnvironmentVariables(consolePath)}\" run"
+                    : "run";
                 using var process = Process.Start(new ProcessStartInfo(fileName, arguments)
                 {
                     CreateNoWindow = true,

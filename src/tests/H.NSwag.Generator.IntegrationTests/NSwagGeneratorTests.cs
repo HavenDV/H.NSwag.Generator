@@ -36,11 +36,6 @@ namespace H.NSwag.Generator.IntegrationTests
             var path = Path.GetTempFileName();
             File.WriteAllText(path, text);
 
-            if (Environment.OSVersion.Platform == PlatformID.Unix)
-            {
-                Directory.SetCurrentDirectory(Path.GetDirectoryName(path) ?? string.Empty);
-            }
-
             var source = NSwagGenerator.Generate(
                 ConsolePath,
                 path);
@@ -56,11 +51,6 @@ namespace H.NSwag.Generator.IntegrationTests
                 var text = Resources.openapi2;
                 var path = Path.GetTempFileName();
                 File.WriteAllText(path, text);
-
-                if (Environment.OSVersion.Platform == PlatformID.Unix)
-                {
-                    Directory.SetCurrentDirectory(Path.GetDirectoryName(path) ?? string.Empty);
-                }
 
                 var _ = NSwagGenerator.Generate(
                     ConsolePath,
