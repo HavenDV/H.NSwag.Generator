@@ -44,7 +44,7 @@ jobs:
       run: dotnet build --configuration Release
     
     - name: Run tests
-      run: dotnet test --configuration Release
+      run: dotnet test --configuration Release --logger "console;verbosity=detailed"
         
     - name: Publish
       run: dotnet nuget push
