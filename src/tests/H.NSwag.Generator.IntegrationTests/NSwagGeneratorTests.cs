@@ -18,6 +18,8 @@ namespace H.NSwag.Generator.IntegrationTests
             if (Environment.OSVersion.Platform == PlatformID.Unix)
             {
                 consolePath = consolePath.Replace("%USERPROFILE%", "/home/runner");
+
+                Directory.SetCurrentDirectory(Path.GetDirectoryName(path) ?? string.Empty);
             }
 
             var source = NSwagGenerator.Generate(
@@ -40,6 +42,8 @@ namespace H.NSwag.Generator.IntegrationTests
                 if (Environment.OSVersion.Platform == PlatformID.Unix)
                 {
                     consolePath = consolePath.Replace("%USERPROFILE%", "/home/runner");
+
+                    Directory.SetCurrentDirectory(Path.GetDirectoryName(path) ?? string.Empty);
                 }
 
                 var source = NSwagGenerator.Generate(
