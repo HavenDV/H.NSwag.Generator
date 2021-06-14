@@ -18,6 +18,7 @@
     <PackageProjectUrl>https://github.com/HavenDV/H.NSwag.Generator</PackageProjectUrl>
     <RepositoryUrl>https://github.com/HavenDV/H.NSwag.Generator</RepositoryUrl>
     <PackageIcon>nuget_icon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup Label="Nuget">
@@ -28,7 +29,7 @@
   <PropertyGroup Label="Source Link">
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedAllSources>true</EmbedAllSources>
-    <IncludeSymbols>true</IncludeSymbols>
+    <!--<IncludeSymbols>true</IncludeSymbols>-->
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
