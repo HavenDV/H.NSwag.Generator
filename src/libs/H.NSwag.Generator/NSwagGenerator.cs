@@ -34,12 +34,6 @@ namespace H.NSwag.Generator
                     "Net50" or "Default" => "NSwagDir_Net50",
                     _ => throw new InvalidOperationException($"Invalid runtime: {runtime}"),
                 };
-                var programFilesSubDir = runtime switch
-                {
-                    "WinX64" or "WinX86" => "Win",
-                    "Default" => "Net50",
-                    _ => runtime,
-                };
                 var fileName = runtime switch
                 {
                     "WinX86" => "NSwag.x86.exe",
@@ -47,10 +41,15 @@ namespace H.NSwag.Generator
                     _ => "dotnet-nswag.dll",
                 };
 
-                var defaultConsolePath = GetGlobalOption(context, defaultDirectoryOptionName);
-                defaultConsolePath = string.IsNullOrWhiteSpace(defaultConsolePath)
-                    ? @$"C:\Program Files (x86)\Rico Suter\NSwagStudio\{programFilesSubDir}\{fileName}"
-                    : $"{defaultConsolePath}{fileName}";
+                var defaultDirectory = GetGlobalOption(context, defaultDirectoryOptionName);
+                if (string.IsNullOrWhiteSpace(defaultDirectory))
+                {
+                    throw new InvalidOperationException(
+                        $"Default directory global option({defaultDirectoryOptionName}) is null or empty.");
+                }
+
+                // ReSharper disable once AssignNullToNotNullAttribute
+                var defaultConsolePath = Path.Combine(defaultDirectory, fileName);
 
                 var consolePath = GetGlobalOption(context, "NSwagConsolePath") ?? defaultConsolePath;
 

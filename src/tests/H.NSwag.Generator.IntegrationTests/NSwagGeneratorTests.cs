@@ -6,6 +6,7 @@ using System.Threading;
 using FluentAssertions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -14,6 +15,20 @@ namespace H.NSwag.Generator.IntegrationTests
     [TestClass]
     public class NSwagGeneratorTests
     {
+        private static string ConsolePath
+        {
+            get
+            {
+                var value = "%USERPROFILE%/.nuget/packages/nswag.msbuild/13.11.3/tools/Net50/dotnet-nswag.dll";
+                if (Environment.OSVersion.Platform == PlatformID.Unix)
+                {
+                    value = value.Replace("%USERPROFILE%", "/home/runner");
+                }
+
+                return value;
+            }
+        }
+
         [TestMethod]
         public void GenerateTest()
         {
@@ -21,16 +36,13 @@ namespace H.NSwag.Generator.IntegrationTests
             var path = Path.GetTempFileName();
             File.WriteAllText(path, text);
 
-            var consolePath = "%USERPROFILE%/.nuget/packages/nswag.msbuild/13.11.3/tools/Net50/dotnet-nswag.dll";
             if (Environment.OSVersion.Platform == PlatformID.Unix)
             {
-                consolePath = consolePath.Replace("%USERPROFILE%", "/home/runner");
-
                 Directory.SetCurrentDirectory(Path.GetDirectoryName(path) ?? string.Empty);
             }
 
             var source = NSwagGenerator.Generate(
-                consolePath,
+                ConsolePath,
                 path);
 
             Console.WriteLine(source);
@@ -45,16 +57,13 @@ namespace H.NSwag.Generator.IntegrationTests
                 var path = Path.GetTempFileName();
                 File.WriteAllText(path, text);
 
-                var consolePath = "%USERPROFILE%/.nuget/packages/nswag.msbuild/13.11.3/tools/Net50/dotnet-nswag.dll";
                 if (Environment.OSVersion.Platform == PlatformID.Unix)
                 {
-                    consolePath = consolePath.Replace("%USERPROFILE%", "/home/runner");
-
                     Directory.SetCurrentDirectory(Path.GetDirectoryName(path) ?? string.Empty);
                 }
 
                 var _ = NSwagGenerator.Generate(
-                    consolePath,
+                    ConsolePath,
                     path);
             });
 
@@ -95,7 +104,9 @@ namespace MyCode
             var generator = new NSwagGenerator();
             var driver = (GeneratorDriver)CSharpGeneratorDriver.Create(
                 new ISourceGenerator[] { generator },
-                new AdditionalText[] { new CustomAdditionalText(path) });
+                new AdditionalText[] { new CustomAdditionalText(path) }, 
+                CSharpParseOptions.Default,
+                new CustomAnalyzerConfigOptionsProvider());
 
             driver.RunGeneratorsAndUpdateCompilation(
                 inputCompilation, 
@@ -108,23 +119,48 @@ namespace MyCode
             var source = outputCompilation.SyntaxTrees.ElementAt(1).GetText().ToString();
             Console.WriteLine(source);
         }
-    }
 
-    public class CustomAdditionalText : AdditionalText
-    {
-        public string Text { get; }
-
-        public override string Path { get; }
-
-        public CustomAdditionalText(string path)
+        public class CustomAdditionalText : AdditionalText
         {
-            Path = path;
-            Text = File.ReadAllText(path);
+            public string Text { get; }
+
+            public override string Path { get; }
+
+            public CustomAdditionalText(string path)
+            {
+                Path = path;
+                Text = File.ReadAllText(path);
+            }
+
+            public override SourceText GetText(CancellationToken cancellationToken = default)
+            {
+                return SourceText.From(Text);
+            }
         }
 
-        public override SourceText GetText(CancellationToken cancellationToken = default)
+        public class CustomAnalyzerConfigOptions : AnalyzerConfigOptions
         {
-            return SourceText.From(Text);
+            public override bool TryGetValue(string key, out string value)
+            {
+                value = ConsolePath;
+
+                return true;
+            }
+        }
+
+        public class CustomAnalyzerConfigOptionsProvider : AnalyzerConfigOptionsProvider
+        {
+            public override AnalyzerConfigOptions GlobalOptions { get; } = new CustomAnalyzerConfigOptions();
+
+            public override AnalyzerConfigOptions GetOptions(SyntaxTree tree)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override AnalyzerConfigOptions GetOptions(AdditionalText textFile)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }
