@@ -16,8 +16,8 @@ namespace H.NSwag.Generator.IntegrationTests.IntegrationTests
             var path = Path.GetTempFileName();
             File.WriteAllText(path, text);
 
-            var source = NSwagGeneratorCore.Generate(
-                @"%USERPROFILE%/.nuget/packages/nswag.msbuild/13.9.4/tools/Net50/dotnet-nswag.exe",
+            var source = NSwagGenerator.Generate(
+                @"%USERPROFILE%/.nuget/packages/nswag.msbuild/13.11.3/tools/Net50/dotnet-nswag.exe",
                 path);
 
             Console.WriteLine(source);
@@ -33,8 +33,8 @@ namespace H.NSwag.Generator.IntegrationTests.IntegrationTests
                 var path = Path.GetTempFileName();
                 File.WriteAllText(path, text);
 
-                var source = NSwagGeneratorCore.Generate(
-                    @"%USERPROFILE%/.nuget/packages/nswag.msbuild/13.9.4/tools/Net50/dotnet-nswag.exe",
+                var source = NSwagGenerator.Generate(
+                    @"%USERPROFILE%/.nuget/packages/nswag.msbuild/13.11.3/tools/Net50/dotnet-nswag.exe",
                     path);
             });
 

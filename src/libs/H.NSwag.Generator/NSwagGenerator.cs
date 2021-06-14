@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using H.NSwag.Generator.Core.Extensions;
@@ -52,7 +54,7 @@ namespace H.NSwag.Generator
 
                 var consolePath = GetGlobalOption(context, "NSwagConsolePath", defaultConsolePath);
 
-                var code = NSwagGeneratorCore.Generate(consolePath, file.Path);
+                var code = Generate(consolePath, file.Path);
 
                 context.AddSource("NSwag Generated CSharp Code", SourceText.From(code, Encoding.UTF8));
             }
@@ -75,6 +77,61 @@ namespace H.NSwag.Generator
 
         public void Initialize(GeneratorInitializationContext context)
         {
+        }
+
+        public static string Generate(string consolePath, string nswagPath)
+        {
+            consolePath = consolePath ?? throw new ArgumentNullException(nameof(consolePath));
+            nswagPath = nswagPath ?? throw new ArgumentNullException(nameof(nswagPath));
+
+            var nswagTempPath = $"{Path.GetTempFileName()}.nswag";
+            var outputPath = $"{Path.GetTempFileName()}.cs".Replace('\\', '/');
+
+            var output = string.Empty;
+            try
+            {
+                File.Copy(nswagPath, nswagTempPath, true);
+
+                var nswagContents = File.ReadAllText(nswagTempPath);
+
+                nswagContents = nswagContents.Replace("\"output\": null,", "\"output\": \"\",");
+                var (start, length) = nswagContents.ExtractAllIndexes("\"output\": \"", "\"").Last();
+                nswagContents = nswagContents
+                    .Remove(start, length)
+                    .Insert(start, outputPath);
+
+                File.WriteAllText(nswagTempPath, nswagContents);
+
+                if (!consolePath.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
+                {
+                    throw new InvalidOperationException(
+                        "The path to the console application must contain the path to the .exe file.");
+                }
+
+                using var process = Process.Start(new ProcessStartInfo(
+                    Environment.ExpandEnvironmentVariables(consolePath),
+                    $"run \"{nswagTempPath}\"")
+                {
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                });
+
+                process?.WaitForExit();
+
+                output = process?.StandardOutput.ReadToEnd();
+
+                return File.ReadAllText(outputPath);
+            }
+            catch (FileNotFoundException)
+            {
+                throw new InvalidOperationException($"NSwag console error: {output}");
+            }
+            finally
+            {
+                File.Delete(outputPath);
+                File.Delete(nswagTempPath);
+            }
         }
 
         #endregion
