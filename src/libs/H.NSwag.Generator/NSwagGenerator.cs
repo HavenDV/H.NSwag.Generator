@@ -100,19 +100,20 @@ namespace H.NSwag.Generator
 
                 File.WriteAllText(nswagTempPath, nswagContents);
 
-                if (!consolePath.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
+                if (!consolePath.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
                 {
                     throw new InvalidOperationException(
-                        "The path to the console application must contain the path to the .exe file.");
+                        "The path to the console application must contain the path to the .dll file.");
                 }
 
                 using var process = Process.Start(new ProcessStartInfo(
-                    Environment.ExpandEnvironmentVariables(consolePath),
-                    $"run \"{nswagTempPath}\"")
+                    "dotnet",
+                    $"{Environment.ExpandEnvironmentVariables(consolePath)} run \"{nswagTempPath}\"")
                 {
                     CreateNoWindow = true,
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
+                    RedirectStandardError = true,
                 });
 
                 process?.WaitForExit();
