@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using H.NSwag.Generator.Core.Extensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
@@ -87,7 +86,8 @@ namespace H.NSwag.Generator
             Directory.SetCurrentDirectory(nswagTempDir);
 
             var nswagTempPath = Path.Combine(nswagTempDir, "temp.nswag");
-            var outputPath = $"{Path.GetTempFileName()}.cs".Replace('\\', '/');
+            var outputPath = Path.ChangeExtension(Path.GetTempFileName(), ".cs")
+                .Replace('\\', '/');
 
             try
             {
@@ -111,8 +111,8 @@ namespace H.NSwag.Generator
                     ? $"\"{Environment.ExpandEnvironmentVariables(consolePath)}\" run"
                     : "run";
 
-                var output = string.Empty;
-                var error = string.Empty;
+                string? output;
+                string? error;
                 {
                     using var process = Process.Start(new ProcessStartInfo(fileName, arguments)
                     {
@@ -126,11 +126,6 @@ namespace H.NSwag.Generator
 
                     output = process?.StandardOutput.ReadToEnd().Replace('\n', ' ');
                     error = process?.StandardError.ReadToEnd().Replace('\n', ' ');
-                }
-
-                for (var i = 0; i < 5000 && !File.Exists(outputPath); i += 50)
-                {
-                    Thread.Sleep(TimeSpan.FromMilliseconds(50));
                 }
 
                 try
