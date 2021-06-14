@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using H.NSwag.Generator.Core.Extensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
@@ -109,18 +110,28 @@ namespace H.NSwag.Generator
                 var arguments = isDll
                     ? $"\"{Environment.ExpandEnvironmentVariables(consolePath)}\" run"
                     : "run";
-                using var process = Process.Start(new ProcessStartInfo(fileName, arguments)
-                {
-                    CreateNoWindow = true,
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                });
 
-                process?.WaitForExit();
-                
-                var output = process?.StandardOutput.ReadToEnd().Replace('\n', ' ');
-                var error = process?.StandardError.ReadToEnd().Replace('\n', ' ');
+                var output = string.Empty;
+                var error = string.Empty;
+                {
+                    using var process = Process.Start(new ProcessStartInfo(fileName, arguments)
+                    {
+                        CreateNoWindow = true,
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                    });
+
+                    process?.WaitForExit();
+
+                    output = process?.StandardOutput.ReadToEnd().Replace('\n', ' ');
+                    error = process?.StandardError.ReadToEnd().Replace('\n', ' ');
+                }
+
+                for (var i = 0; i < 5000 && !File.Exists(outputPath); i += 50)
+                {
+                    Thread.Sleep(TimeSpan.FromMilliseconds(50));
+                }
 
                 try
                 {
@@ -128,7 +139,8 @@ namespace H.NSwag.Generator
                 }
                 catch (FileNotFoundException exception)
                 {
-                    throw new InvalidOperationException($"NSwag console error. Output: {output}. Error: {error}", exception);
+                    throw new InvalidOperationException(
+                        $"NSwag console error. Output: {output}. Error: {error}", exception);
                 }
             }
             finally
