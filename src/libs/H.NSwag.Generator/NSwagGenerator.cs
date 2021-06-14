@@ -1,11 +1,13 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using H.NSwag.Generator.Core.Extensions;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
+using Newtonsoft.Json;
+using NSwag;
+using NSwag.CodeGeneration.CSharp;
 
 namespace H.NSwag.Generator
 {
@@ -23,39 +25,9 @@ namespace H.NSwag.Generator
                                    text.Path.EndsWith(".nswag", StringComparison.InvariantCultureIgnoreCase))
                            ?? throw new InvalidOperationException(".nswag file is not found.");
 
-                var runtime = file.GetText()?.ToString().ExtractAll("\"runtime\": \"", "\"").First();
-                var defaultDirectoryOptionName = runtime switch
-                {
-                    "WinX64" or "WinX86" => "NSwagDir",
-                    "NetCore21" => "NSwagDir_Core21",
-                    "NetCore22" => "NSwagDir_Core22",
-                    "NetCore30" => "NSwagDir_Core30",
-                    "NetCore31" => "NSwagDir_Core31",
-                    "Net50" or "Default" => "NSwagDir_Net50",
-                    _ => throw new InvalidOperationException($"Invalid runtime: {runtime}"),
-                };
-                var fileName = runtime switch
-                {
-                    "WinX86" => "NSwag.x86.exe",
-                    "WinX64" => "NSwag.exe",
-                    _ => "dotnet-nswag.dll",
-                };
+                var code = Generate(file.Path);
 
-                var defaultDirectory = GetGlobalOption(context, defaultDirectoryOptionName);
-                if (string.IsNullOrWhiteSpace(defaultDirectory))
-                {
-                    throw new InvalidOperationException(
-                        $"Default directory global option({defaultDirectoryOptionName}) is null or empty.");
-                }
-
-                // ReSharper disable once AssignNullToNotNullAttribute
-                var defaultConsolePath = Path.Combine(defaultDirectory, fileName);
-
-                var consolePath = GetGlobalOption(context, "NSwagConsolePath") ?? defaultConsolePath;
-
-                var code = Generate(consolePath, file.Path);
-
-                context.AddSource("NSwag Generated CSharp Code", SourceText.From(code, Encoding.UTF8));
+                context.AddSource(nameof(NSwagGenerator), SourceText.From(code, Encoding.UTF8));
             }
             catch (Exception exception)
             {
@@ -76,91 +48,33 @@ namespace H.NSwag.Generator
         {
         }
 
-        public static string Generate(string consolePath, string nswagPath)
+        public static string Generate(string nswagPath)
         {
-            consolePath = consolePath ?? throw new ArgumentNullException(nameof(consolePath));
             nswagPath = nswagPath ?? throw new ArgumentNullException(nameof(nswagPath));
 
-            var nswagTempDir = $"{Path.GetTempFileName().Replace(".tmp", string.Empty)}";
-            Directory.CreateDirectory(nswagTempDir);
-            Directory.SetCurrentDirectory(nswagTempDir);
-
-            var nswagTempPath = Path.Combine(nswagTempDir, "temp.nswag");
-            var outputPath = Path.ChangeExtension(Path.GetTempFileName(), ".cs")
-                .Replace('\\', '/');
-
-            try
+            var json = File.ReadAllText(nswagPath);
+            var document = JsonConvert.DeserializeObject<NSwagDocument>(json);
+            var settings = document.CodeGenerators.OpenApiToCSharpClient;
+            
+            var openApi = Task.Run(() => 
+                string.IsNullOrWhiteSpace(document.DocumentGenerator.FromDocument.Url)
+                    ? document.DocumentGenerator.FromDocument.Json.StartsWith("{", StringComparison.OrdinalIgnoreCase)
+                        ? OpenApiDocument.FromJsonAsync(document.DocumentGenerator.FromDocument.Json)
+                        : OpenApiYamlDocument.FromYamlAsync(document.DocumentGenerator.FromDocument.Json)
+                    : OpenApiDocument.FromUrlAsync(document.DocumentGenerator.FromDocument.Url))
+                .Result;
+            var generator = new CSharpClientGenerator(openApi, new CSharpClientGeneratorSettings
             {
-                File.Copy(nswagPath, nswagTempPath, true);
-
-                var nswagContents = File.ReadAllText(nswagTempPath);
-
-                nswagContents = nswagContents.Replace("\"output\": null,", "\"output\": \"\",");
-                var (start, length) = nswagContents.ExtractAllIndexes("\"output\": \"", "\"").Last();
-                nswagContents = nswagContents
-                    .Remove(start, length)
-                    .Insert(start, outputPath);
-
-                File.WriteAllText(nswagTempPath, nswagContents);
-
-                var isDll = consolePath.EndsWith(".dll", StringComparison.OrdinalIgnoreCase);
-                var fileName = isDll
-                    ? "dotnet"
-                    : Environment.ExpandEnvironmentVariables(consolePath);
-                var arguments = isDll
-                    ? $"\"{Environment.ExpandEnvironmentVariables(consolePath)}\" run"
-                    : "run";
-
-                string? output;
-                string? error;
+                ClassName = settings.ClassName,
+                CSharpGeneratorSettings =
                 {
-                    using var process = Process.Start(new ProcessStartInfo(fileName, arguments)
-                    {
-                        CreateNoWindow = true,
-                        UseShellExecute = false,
-                        RedirectStandardOutput = true,
-                        RedirectStandardError = true,
-                    });
+                    Namespace = settings.Namespace,
+                    GenerateNullableReferenceTypes = settings.GenerateNullableReferenceTypes,
+                },
+                GenerateOptionalParameters = settings.GenerateOptionalParameters,
+            });
 
-                    process?.WaitForExit();
-
-                    output = process?.StandardOutput.ReadToEnd().Replace('\n', ' ');
-                    error = process?.StandardError.ReadToEnd().Replace('\n', ' ');
-                }
-
-                try
-                {
-                    return File.ReadAllText(outputPath);
-                }
-                catch (FileNotFoundException exception)
-                {
-                    throw new InvalidOperationException(
-                        $"NSwag console error. Output: {output}. Error: {error}", exception);
-                }
-            }
-            finally
-            {
-                if (File.Exists(outputPath))
-                {
-                    File.Delete(outputPath);
-                }
-                if (File.Exists(nswagTempPath))
-                {
-                    File.Delete(nswagTempPath);
-                }
-            }
-        }
-
-        #endregion
-
-        #region Utilities
-
-        private static string? GetGlobalOption(GeneratorExecutionContext context, string name)
-        {
-            return context.AnalyzerConfigOptions.GlobalOptions.TryGetValue($"build_property.{name}", out var result) &&
-                   !string.IsNullOrWhiteSpace(result)
-                ? result
-                : null;
+            return generator.GenerateFile();
         }
 
         #endregion

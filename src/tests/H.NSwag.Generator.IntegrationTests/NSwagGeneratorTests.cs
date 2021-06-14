@@ -15,20 +15,6 @@ namespace H.NSwag.Generator.IntegrationTests
     [TestClass]
     public class NSwagGeneratorTests
     {
-        private static string ConsolePath
-        {
-            get
-            {
-                var value = "%USERPROFILE%/.nuget/packages/nswag.msbuild/13.11.3/tools/Net50/dotnet-nswag.dll";
-                if (Environment.OSVersion.Platform == PlatformID.Unix)
-                {
-                    value = value.Replace("%USERPROFILE%", "/home/runner");
-                }
-
-                return value;
-            }
-        }
-
         [TestMethod]
         public void GenerateTest()
         {
@@ -36,28 +22,9 @@ namespace H.NSwag.Generator.IntegrationTests
             var path = Path.GetTempFileName();
             File.WriteAllText(path, text);
 
-            var source = NSwagGenerator.Generate(
-                ConsolePath,
-                path);
+            var source = NSwagGenerator.Generate(path);
 
             Console.WriteLine(source);
-        }
-
-        [TestMethod]
-        public void GenerateFailedTest()
-        {
-            var exception = Assert.ThrowsException<InvalidOperationException>(() =>
-            {
-                var text = Resources.openapi2;
-                var path = Path.GetTempFileName();
-                File.WriteAllText(path, text);
-
-                var _ = NSwagGenerator.Generate(
-                    ConsolePath,
-                    path);
-            });
-
-            Console.WriteLine(exception);
         }
 
         [TestMethod]
@@ -94,9 +61,7 @@ namespace MyCode
             var generator = new NSwagGenerator();
             var driver = (GeneratorDriver)CSharpGeneratorDriver.Create(
                 new ISourceGenerator[] { generator },
-                new AdditionalText[] { new CustomAdditionalText(path) }, 
-                CSharpParseOptions.Default,
-                new CustomAnalyzerConfigOptionsProvider());
+                new AdditionalText[] { new CustomAdditionalText(path) });
 
             driver.RunGeneratorsAndUpdateCompilation(
                 inputCompilation, 
@@ -125,31 +90,6 @@ namespace MyCode
             public override SourceText GetText(CancellationToken cancellationToken = default)
             {
                 return SourceText.From(Text);
-            }
-        }
-
-        public class CustomAnalyzerConfigOptions : AnalyzerConfigOptions
-        {
-            public override bool TryGetValue(string key, out string value)
-            {
-                value = ConsolePath;
-
-                return true;
-            }
-        }
-
-        public class CustomAnalyzerConfigOptionsProvider : AnalyzerConfigOptionsProvider
-        {
-            public override AnalyzerConfigOptions GlobalOptions { get; } = new CustomAnalyzerConfigOptions();
-
-            public override AnalyzerConfigOptions GetOptions(SyntaxTree tree)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override AnalyzerConfigOptions GetOptions(AdditionalText textFile)
-            {
-                throw new NotImplementedException();
             }
         }
     }
