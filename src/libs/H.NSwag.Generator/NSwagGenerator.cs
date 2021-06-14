@@ -119,8 +119,8 @@ namespace H.NSwag.Generator
 
                 process?.WaitForExit();
                 
-                var output = process?.StandardOutput.ReadToEnd();
-                var error = process?.StandardError.ReadToEnd();
+                var output = process?.StandardOutput.ReadToEnd().Replace('\n', ' ');
+                var error = process?.StandardError.ReadToEnd().Replace('\n', ' ');
 
                 try
                 {
@@ -128,9 +128,7 @@ namespace H.NSwag.Generator
                 }
                 catch (FileNotFoundException exception)
                 {
-                    throw new InvalidOperationException($@"NSwag console error. 
-Output: {output}.
-Error: {error}", exception);
+                    throw new InvalidOperationException($"NSwag console error. Output: {output}. Error: {error}", exception);
                 }
             }
             finally
