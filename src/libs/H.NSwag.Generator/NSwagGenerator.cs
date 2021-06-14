@@ -40,19 +40,19 @@ namespace H.NSwag.Generator
                     "Default" => "Net50",
                     _ => runtime,
                 };
-                var exeName = runtime switch
+                var fileName = runtime switch
                 {
                     "WinX86" => "NSwag.x86.exe",
                     "WinX64" => "NSwag.exe",
-                    _ => "dotnet-nswag.exe",
+                    _ => "dotnet-nswag.dll",
                 };
 
                 var defaultConsolePath = GetGlobalOption(context, defaultDirectoryOptionName);
                 defaultConsolePath = string.IsNullOrWhiteSpace(defaultConsolePath)
-                    ? @$"C:\Program Files (x86)\Rico Suter\NSwagStudio\{programFilesSubDir}\{exeName}"
-                    : $"{defaultConsolePath}{exeName}";
+                    ? @$"C:\Program Files (x86)\Rico Suter\NSwagStudio\{programFilesSubDir}\{fileName}"
+                    : $"{defaultConsolePath}{fileName}";
 
-                var consolePath = GetGlobalOption(context, "NSwagConsolePath", defaultConsolePath);
+                var consolePath = GetGlobalOption(context, "NSwagConsolePath") ?? defaultConsolePath;
 
                 var code = Generate(consolePath, file.Path);
 
@@ -85,7 +85,6 @@ namespace H.NSwag.Generator
             var nswagTempPath = $"{Path.GetTempFileName()}.nswag";
             var outputPath = $"{Path.GetTempFileName()}.cs".Replace('\\', '/');
 
-            var output = string.Empty;
             try
             {
                 File.Copy(nswagPath, nswagTempPath, true);
@@ -100,15 +99,14 @@ namespace H.NSwag.Generator
 
                 File.WriteAllText(nswagTempPath, nswagContents);
 
-                if (!consolePath.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
-                {
-                    throw new InvalidOperationException(
-                        "The path to the console application must contain the path to the .dll file.");
-                }
-
-                using var process = Process.Start(new ProcessStartInfo(
-                    "dotnet",
-                    $"{Environment.ExpandEnvironmentVariables(consolePath)} run \"{nswagTempPath}\"")
+                var isDll = consolePath.EndsWith(".dll", StringComparison.OrdinalIgnoreCase);
+                var fileName = isDll
+                    ? "dotnet"
+                    : Environment.ExpandEnvironmentVariables(consolePath);
+                var arguments = isDll
+                    ? $"{Environment.ExpandEnvironmentVariables(consolePath)} run \"{nswagTempPath}\""
+                    : $"run \"{nswagTempPath}\"";
+                using var process = Process.Start(new ProcessStartInfo(fileName, arguments)
                 {
                     CreateNoWindow = true,
                     UseShellExecute = false,
@@ -117,19 +115,31 @@ namespace H.NSwag.Generator
                 });
 
                 process?.WaitForExit();
+                
+                var output = process?.StandardOutput.ReadToEnd();
+                var error = process?.StandardError.ReadToEnd();
 
-                output = process?.StandardOutput.ReadToEnd();
-
-                return File.ReadAllText(outputPath);
-            }
-            catch (FileNotFoundException)
-            {
-                throw new InvalidOperationException($"NSwag console error: {output}");
+                try
+                {
+                    return File.ReadAllText(outputPath);
+                }
+                catch (FileNotFoundException exception)
+                {
+                    throw new InvalidOperationException($@"NSwag console error. 
+Output: {output}.
+Error: {error}", exception);
+                }
             }
             finally
             {
-                File.Delete(outputPath);
-                File.Delete(nswagTempPath);
+                if (File.Exists(outputPath))
+                {
+                    File.Delete(outputPath);
+                }
+                if (File.Exists(nswagTempPath))
+                {
+                    File.Delete(nswagTempPath);
+                }
             }
         }
 
@@ -137,12 +147,12 @@ namespace H.NSwag.Generator
 
         #region Utilities
 
-        private static string GetGlobalOption(GeneratorExecutionContext context, string name, string? defaultValue = null)
+        private static string? GetGlobalOption(GeneratorExecutionContext context, string name)
         {
             return context.AnalyzerConfigOptions.GlobalOptions.TryGetValue($"build_property.{name}", out var result) &&
                    !string.IsNullOrWhiteSpace(result)
                 ? result
-                : defaultValue ?? string.Empty;
+                : null;
         }
 
         #endregion
