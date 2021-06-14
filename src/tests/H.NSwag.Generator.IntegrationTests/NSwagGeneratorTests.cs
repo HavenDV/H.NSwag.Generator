@@ -14,8 +14,14 @@ namespace H.NSwag.Generator.IntegrationTests
             var path = Path.GetTempFileName();
             File.WriteAllText(path, text);
 
+            var consolePath = "%USERPROFILE%/.nuget/packages/nswag.msbuild/13.11.3/tools/Net50/dotnet-nswag.dll";
+            if (Environment.OSVersion.Platform == PlatformID.Unix)
+            {
+                consolePath = consolePath.Replace("%USERPROFILE%", "/home/runner");
+            }
+
             var source = NSwagGenerator.Generate(
-                "%USERPROFILE%/.nuget/packages/nswag.msbuild/13.11.3/tools/Net50/dotnet-nswag.dll",
+                consolePath,
                 path);
 
             Console.WriteLine(source);
@@ -30,8 +36,14 @@ namespace H.NSwag.Generator.IntegrationTests
                 var path = Path.GetTempFileName();
                 File.WriteAllText(path, text);
 
+                var consolePath = "%USERPROFILE%/.nuget/packages/nswag.msbuild/13.11.3/tools/Net50/dotnet-nswag.dll";
+                if (Environment.OSVersion.Platform == PlatformID.Unix)
+                {
+                    consolePath = consolePath.Replace("%USERPROFILE%", "/home/runner");
+                }
+
                 var source = NSwagGenerator.Generate(
-                    "%USERPROFILE%/.nuget/packages/nswag.msbuild/13.11.3/tools/Net50/dotnet-nswag.dll",
+                    consolePath,
                     path);
             });
 
