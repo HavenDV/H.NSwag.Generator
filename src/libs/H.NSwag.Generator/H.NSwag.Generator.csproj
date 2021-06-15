@@ -16,7 +16,37 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="$(OutputPath)\*.*" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" />
+    <PackageReference Include="NSwag.CodeGeneration.CSharp" Version="13.11.3" PrivateAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="10.4.4" PrivateAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="NSwag.CodeGeneration" Version="13.11.3" PrivateAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" PrivateAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.4.1" PrivateAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="Namotion.Reflection" Version="1.0.23" PrivateAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="NJsonSchema" Version="10.4.4" PrivateAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="DotLiquid" Version="2.0.385" PrivateAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="NSwag.Core" Version="13.11.3" PrivateAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="NJsonSchema.CodeGeneration" Version="10.4.4" PrivateAssets="all" GeneratePathProperty="true" />
+
+    <PackageReference Include="NSwag.Core.Yaml" Version="13.11.3" PrivateAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="NJsonSchema.Yaml" Version="10.4.4" PrivateAssets="all" GeneratePathProperty="true" />
+    <!-- .Net Standard 1.3 -->
+    <PackageReference Include="YamlDotNet" Version="9.1.4" PrivateAssets="all" GeneratePathProperty="true" />
+
+    <None Include="$(PkgNSwag_CodeGeneration_CSharp)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
+    <None Include="$(PkgNJsonSchema_CodeGeneration_CSharp)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
+    <None Include="$(PkgNSwag_CodeGeneration)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
+    <None Include="$(PkgNewtonsoft_Json)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
+    <None Include="$(PkgMicrosoft_CSharp)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
+    <None Include="$(PkgNamotion_Reflection)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
+    <None Include="$(PkgNJsonSchema)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
+    <None Include="$(PkgDotLiquid)\lib\netstandard1.3\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
+    <None Include="$(PkgNSwag_Core)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
+    <None Include="$(PkgNJsonSchema_CodeGeneration)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
+    <None Include="$(PkgNSwag_Core_Yaml)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
+    <None Include="$(PkgNJsonSchema_Yaml)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
+    <None Include="$(PkgYamlDotNet)\lib\netstandard1.3\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
+
+    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
     <None Include="H.NSwag.Generator.props" Pack="true" PackagePath="build" />
   </ItemGroup>
 
@@ -26,8 +56,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.10.0" PrivateAssets="all" />
-    <PackageReference Include="NSwag.CodeGeneration.CSharp" Version="13.11.3" PrivateAssets="all" />
-    <PackageReference Include="NSwag.Core.Yaml" Version="13.11.3" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>

@@ -53,7 +53,9 @@ namespace H.NSwag.Generator
             nswagPath = nswagPath ?? throw new ArgumentNullException(nameof(nswagPath));
 
             var json = File.ReadAllText(nswagPath);
-            var document = JsonConvert.DeserializeObject<NSwagDocument>(json);
+            var document = 
+                JsonConvert.DeserializeObject<NSwagDocument>(json) ??
+                throw new InvalidOperationException("Document is null.");
             var settings = document.CodeGenerators.OpenApiToCSharpClient;
             
             var openApi = Task.Run(() => 
