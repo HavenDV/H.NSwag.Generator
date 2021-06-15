@@ -68,12 +68,39 @@ namespace H.NSwag.Generator
             var generator = new CSharpClientGenerator(openApi, new CSharpClientGeneratorSettings
             {
                 ClassName = settings.ClassName,
+                AdditionalContractNamespaceUsages = settings.AdditionalContractNamespaceUsages,
+                AdditionalNamespaceUsages = settings.AdditionalNamespaceUsages,
+                ChecksumCacheEnabled = settings.ChecksumCacheEnabled,
+                ClientBaseClass = settings.ClientBaseClass,
+                ClientBaseInterface = settings.ClientBaseInterface,
+                ClientClassAccessModifier = settings.ClientClassAccessModifier,
+                ConfigurationClass = settings.ConfigurationClass,
+                DisposeHttpClient = settings.DisposeHttpClient,
+                ExceptionClass = settings.ExceptionClass,
+                ProtectedMethods = settings.ProtectedMethods,
                 CSharpGeneratorSettings =
                 {
                     Namespace = settings.Namespace,
                     GenerateNullableReferenceTypes = settings.GenerateNullableReferenceTypes,
+                    AnyType = settings.AnyType,
+                    ArrayBaseType = settings.ArrayBaseType,
+                    ArrayInstanceType = settings.ArrayInstanceType,
+                    ArrayType = settings.ArrayType,
+                    ClassStyle = settings.ClassStyle,
+                    DateTimeType = settings.DateTimeType,
+                    DateType = settings.DateType,
+                    DictionaryBaseType = settings.DictionaryBaseType,
                 },
                 GenerateOptionalParameters = settings.GenerateOptionalParameters,
+                GenerateBaseUrlProperty = settings.GenerateBaseUrlProperty,
+                GenerateClientClasses = settings.GenerateClientClasses,
+                GenerateClientInterfaces = settings.GenerateClientInterfaces,
+                GenerateDtoTypes = settings.GenerateDtoTypes,
+                GenerateExceptionClasses = settings.GenerateExceptionClasses,
+                GeneratePrepareRequestAndProcessResponseAsAsyncMethods = settings.GeneratePrepareRequestAndProcessResponseAsAsyncMethods,
+                GenerateResponseClasses = settings.GenerateResponseClasses,
+                GenerateSyncMethods = settings.GenerateSyncMethods,
+                GenerateUpdateJsonSerializerSettingsMethod = settings.GenerateUpdateJsonSerializerSettingsMethod,
             });
 
             return generator.GenerateFile();

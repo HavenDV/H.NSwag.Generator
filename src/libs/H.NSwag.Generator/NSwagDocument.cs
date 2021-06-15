@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
+using NJsonSchema.CodeGeneration.CSharp;
 
 #nullable disable
 
@@ -31,10 +32,10 @@ namespace H.NSwag.Generator
     public class OpenApiToCSharpClient
     {
         [JsonProperty("clientBaseClass")]
-        public object ClientBaseClass { get; set; }
+        public string ClientBaseClass { get; set; }
 
         [JsonProperty("configurationClass")]
-        public object ConfigurationClass { get; set; }
+        public string ConfigurationClass { get; set; }
 
         [JsonProperty("generateClientClasses")]
         public bool GenerateClientClasses { get; set; }
@@ -43,7 +44,7 @@ namespace H.NSwag.Generator
         public bool GenerateClientInterfaces { get; set; }
 
         [JsonProperty("clientBaseInterface")]
-        public object ClientBaseInterface { get; set; }
+        public string ClientBaseInterface { get; set; }
 
         [JsonProperty("injectHttpClient")]
         public bool InjectHttpClient { get; set; }
@@ -52,7 +53,7 @@ namespace H.NSwag.Generator
         public bool DisposeHttpClient { get; set; }
 
         [JsonProperty("protectedMethods")]
-        public List<string> ProtectedMethods { get; set; }
+        public string[] ProtectedMethods { get; set; }
 
         [JsonProperty("generateExceptionClasses")]
         public bool GenerateExceptionClasses { get; set; }
@@ -127,10 +128,13 @@ namespace H.NSwag.Generator
         public string OperationGenerationMode { get; set; }
 
         [JsonProperty("additionalNamespaceUsages")]
-        public List<object> AdditionalNamespaceUsages { get; set; }
+        public string[] AdditionalNamespaceUsages { get; set; }
 
         [JsonProperty("additionalContractNamespaceUsages")]
-        public List<object> AdditionalContractNamespaceUsages { get; set; }
+        public string[] AdditionalContractNamespaceUsages { get; set; }
+
+        [JsonProperty("checksumCacheEnabled")]
+        public bool ChecksumCacheEnabled { get; set; }
 
         [JsonProperty("generateOptionalParameters")]
         public bool GenerateOptionalParameters { get; set; }
@@ -208,7 +212,7 @@ namespace H.NSwag.Generator
         public string DictionaryBaseType { get; set; }
 
         [JsonProperty("classStyle")]
-        public string ClassStyle { get; set; }
+        public CSharpClassStyle ClassStyle { get; set; }
 
         [JsonProperty("jsonLibrary")]
         public string JsonLibrary { get; set; }
