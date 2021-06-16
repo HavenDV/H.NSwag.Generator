@@ -31,21 +31,21 @@
     <PackageReference Include="NJsonSchema.Yaml" Version="10.4.4" PrivateAssets="all" GeneratePathProperty="true" />
     <PackageReference Include="YamlDotNet" Version="9.1.4" PrivateAssets="all" GeneratePathProperty="true" />
 
-    <None Include="$(PkgNSwag_CodeGeneration_CSharp)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
-    <None Include="$(PkgNJsonSchema_CodeGeneration_CSharp)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
-    <None Include="$(PkgNSwag_CodeGeneration)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
-    <None Include="$(PkgNewtonsoft_Json)\lib\netstandard1.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
-    <None Include="$(PkgMicrosoft_CSharp)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
-    <None Include="$(PkgNamotion_Reflection)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
-    <None Include="$(PkgNJsonSchema)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
-    <None Include="$(PkgDotLiquid)\lib\netstandard1.3\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
-    <None Include="$(PkgNSwag_Core)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
-    <None Include="$(PkgNJsonSchema_CodeGeneration)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
-    <None Include="$(PkgNSwag_Core_Yaml)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
-    <None Include="$(PkgNJsonSchema_Yaml)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
-    <None Include="$(PkgYamlDotNet)\lib\netstandard1.3\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
+    <None Include="$(PkgNSwag_CodeGeneration_CSharp)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
+    <None Include="$(PkgNJsonSchema_CodeGeneration_CSharp)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
+    <None Include="$(PkgNSwag_CodeGeneration)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
+    <None Include="$(PkgNewtonsoft_Json)\lib\netstandard1.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
+    <None Include="$(PkgMicrosoft_CSharp)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
+    <None Include="$(PkgNamotion_Reflection)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
+    <None Include="$(PkgNJsonSchema)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
+    <None Include="$(PkgDotLiquid)\lib\netstandard1.3\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
+    <None Include="$(PkgNSwag_Core)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
+    <None Include="$(PkgNJsonSchema_CodeGeneration)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
+    <None Include="$(PkgNSwag_Core_Yaml)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
+    <None Include="$(PkgNJsonSchema_Yaml)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
+    <None Include="$(PkgYamlDotNet)\lib\netstandard1.3\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
 
-    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependensies/%(FileName).dll" />
+    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
     <None Include="H.NSwag.Generator.props" Pack="true" PackagePath="build" />
   </ItemGroup>
 
