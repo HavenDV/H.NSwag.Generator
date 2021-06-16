@@ -18,29 +18,30 @@ namespace H.NSwag.Generator
 
         public void Execute(GeneratorExecutionContext context)
         {
-            try
+            foreach (var text in context.AdditionalFiles
+                .Where(static text => text.Path.EndsWith(
+                    ".nswag", 
+                    StringComparison.InvariantCultureIgnoreCase)))
             {
-                var file = context.AdditionalFiles
-                               .FirstOrDefault(text =>
-                                   text.Path.EndsWith(".nswag", StringComparison.InvariantCultureIgnoreCase))
-                           ?? throw new InvalidOperationException(".nswag file is not found.");
-
-                var code = Generate(file.Path);
-
-                context.AddSource(nameof(NSwagGenerator), SourceText.From(code, Encoding.UTF8));
-            }
-            catch (Exception exception)
-            {
-                context.ReportDiagnostic(
-                    Diagnostic.Create(
-                        new DiagnosticDescriptor(
-                            "NSG0001",
-                            "Exception: ",
-                            $"{exception}",
-                            "Usage",
-                            DiagnosticSeverity.Error,
-                            true),
-                        Location.None));
+                try
+                {
+                    context.AddSource(
+                        $"{Path.GetFileName(text.Path)}.cs", 
+                        SourceText.From(Generate(text.Path), Encoding.UTF8));
+                }
+                catch (Exception exception)
+                {
+                    context.ReportDiagnostic(
+                        Diagnostic.Create(
+                            new DiagnosticDescriptor(
+                                "NSG0001",
+                                "Exception: ",
+                                $"{exception}",
+                                "Usage",
+                                DiagnosticSeverity.Error,
+                                true),
+                            Location.None));
+                }
             }
         }
 
@@ -48,22 +49,23 @@ namespace H.NSwag.Generator
         {
         }
 
-        public static string Generate(string nswagPath)
+        public static string Generate(string path)
         {
-            nswagPath = nswagPath ?? throw new ArgumentNullException(nameof(nswagPath));
+            path = path ?? throw new ArgumentNullException(nameof(path));
 
-            var json = File.ReadAllText(nswagPath);
+            var json = File.ReadAllText(path);
             var document = 
                 JsonConvert.DeserializeObject<NSwagDocument>(json) ??
                 throw new InvalidOperationException("Document is null.");
             var settings = document.CodeGenerators.OpenApiToCSharpClient;
-            
+            var fromDocument = document.DocumentGenerator.FromDocument;
+
             var openApi = Task.Run(() => 
-                string.IsNullOrWhiteSpace(document.DocumentGenerator.FromDocument.Url)
-                    ? document.DocumentGenerator.FromDocument.Json.StartsWith("{", StringComparison.OrdinalIgnoreCase)
-                        ? OpenApiDocument.FromJsonAsync(document.DocumentGenerator.FromDocument.Json)
-                        : OpenApiYamlDocument.FromYamlAsync(document.DocumentGenerator.FromDocument.Json)
-                    : OpenApiDocument.FromUrlAsync(document.DocumentGenerator.FromDocument.Url))
+                string.IsNullOrWhiteSpace(fromDocument.Url)
+                    ? fromDocument.Json.StartsWith("{", StringComparison.OrdinalIgnoreCase)
+                        ? OpenApiDocument.FromJsonAsync(fromDocument.Json)
+                        : OpenApiYamlDocument.FromYamlAsync(fromDocument.Json)
+                    : OpenApiDocument.FromUrlAsync(fromDocument.Url))
                 .Result;
             var generator = new CSharpClientGenerator(openApi, new CSharpClientGeneratorSettings
             {

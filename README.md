@@ -9,9 +9,9 @@
 ### Usage
 The generator generates code based on any .nswag file in the AdditionalFiles ItemGroup.
 ```xml
-  <ItemGroup>
-    <AdditionalFiles Include="openapi.nswag" />
-  </ItemGroup>
+<ItemGroup>
+  <AdditionalFiles Include="openapi.nswag" />
+</ItemGroup>
 ```
 
 ### Contacts
