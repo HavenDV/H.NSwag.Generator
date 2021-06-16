@@ -9,7 +9,7 @@
 
   <PropertyGroup Label="Nuget">
     <BUILD_NUMBER Condition="'$(BUILD_NUMBER)' == ''">1</BUILD_NUMBER>
-    <Version>1.1.$(BUILD_NUMBER)</Version>
+    <Version>13.11.3.$(BUILD_NUMBER)</Version>
     <PackageReleaseNotes>$(PACKAGE_RELEASE_NOTES)</PackageReleaseNotes>
     <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
@@ -44,7 +44,6 @@
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <AnalysisLevel>latest</AnalysisLevel>
     <AnalysisMode>AllEnabledByDefault</AnalysisMode>
-    <NoWarn>$(NoWarn);CA1014</NoWarn>
   </PropertyGroup>
 
 </Project>
