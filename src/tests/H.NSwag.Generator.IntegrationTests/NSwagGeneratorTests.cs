@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -15,13 +16,13 @@ namespace H.NSwag.Generator.IntegrationTests
     public class NSwagGeneratorTests
     {
         [TestMethod]
-        public void GenerateTest()
+        public async Task GenerateTest()
         {
             var text = Resources.openapi1;
             var path = Path.GetTempFileName();
             File.WriteAllText(path, text);
 
-            var source = NSwagGenerator.Generate(path);
+            var source = await NSwagGenerator.GenerateAsync(path);
 
             Console.WriteLine(source);
         }

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
@@ -25,9 +26,11 @@ namespace H.NSwag.Generator
             {
                 try
                 {
+                    var source = Task.Run(() => GenerateAsync(text.Path, context.CancellationToken)).Result;
+
                     context.AddSource(
                         $"{Path.GetFileName(text.Path)}.cs", 
-                        SourceText.From(Generate(text.Path), Encoding.UTF8));
+                        SourceText.From(source, Encoding.UTF8));
                 }
                 catch (Exception exception)
                 {
@@ -49,7 +52,9 @@ namespace H.NSwag.Generator
         {
         }
 
-        public static string Generate(string path)
+        public static async Task<string> GenerateAsync(
+            string path, 
+            CancellationToken cancellationToken = default)
         {
             path = path ?? throw new ArgumentNullException(nameof(path));
 
@@ -60,13 +65,11 @@ namespace H.NSwag.Generator
             var settings = document.CodeGenerators.OpenApiToCSharpClient;
             var fromDocument = document.DocumentGenerator.FromDocument;
 
-            var openApi = Task.Run(() => 
-                string.IsNullOrWhiteSpace(fromDocument.Url)
+            var openApi = string.IsNullOrWhiteSpace(fromDocument.Url)
                     ? fromDocument.Json.StartsWith("{", StringComparison.OrdinalIgnoreCase)
-                        ? OpenApiDocument.FromJsonAsync(fromDocument.Json)
-                        : OpenApiYamlDocument.FromYamlAsync(fromDocument.Json)
-                    : OpenApiDocument.FromUrlAsync(fromDocument.Url))
-                .Result;
+                        ? await OpenApiDocument.FromJsonAsync(fromDocument.Json, cancellationToken).ConfigureAwait(false)
+                        : await OpenApiYamlDocument.FromYamlAsync(fromDocument.Json, cancellationToken).ConfigureAwait(false)
+                    : await OpenApiDocument.FromUrlAsync(fromDocument.Url, cancellationToken).ConfigureAwait(false);
             var generator = new CSharpClientGenerator(openApi, new CSharpClientGeneratorSettings
             {
                 ClassName = settings.ClassName,
