@@ -58,6 +58,7 @@ namespace H.NSwag.Generator
         {
             path = path ?? throw new ArgumentNullException(nameof(path));
 
+            var folder = Path.GetDirectoryName(path) ?? string.Empty;
             var json = File.ReadAllText(path);
             var document = 
                 JsonConvert.DeserializeObject<NSwagDocument>(json) ??
@@ -66,10 +67,12 @@ namespace H.NSwag.Generator
             var fromDocument = document.DocumentGenerator.FromDocument;
 
             var openApi = string.IsNullOrWhiteSpace(fromDocument.Url)
-                    ? fromDocument.Json.StartsWith("{", StringComparison.OrdinalIgnoreCase)
-                        ? await OpenApiDocument.FromJsonAsync(fromDocument.Json, cancellationToken).ConfigureAwait(false)
-                        : await OpenApiYamlDocument.FromYamlAsync(fromDocument.Json, cancellationToken).ConfigureAwait(false)
-                    : await OpenApiDocument.FromUrlAsync(fromDocument.Url, cancellationToken).ConfigureAwait(false);
+                ? fromDocument.Json.StartsWith("{", StringComparison.OrdinalIgnoreCase)
+                    ? await OpenApiDocument.FromJsonAsync(fromDocument.Json, cancellationToken).ConfigureAwait(false)
+                    : await OpenApiYamlDocument.FromYamlAsync(fromDocument.Json, cancellationToken).ConfigureAwait(false)
+                : fromDocument.Url.StartsWith("http", StringComparison.OrdinalIgnoreCase)
+                    ? await OpenApiDocument.FromUrlAsync(fromDocument.Url, cancellationToken).ConfigureAwait(false)
+                    : await OpenApiDocument.FromFileAsync(Path.Combine(folder, fromDocument.Url), cancellationToken).ConfigureAwait(false);
             var generator = new CSharpClientGenerator(openApi, new CSharpClientGeneratorSettings
             {
                 ClassName = settings.ClassName,
