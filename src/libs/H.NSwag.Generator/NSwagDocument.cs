@@ -161,7 +161,7 @@ namespace H.NSwag.Generator
         public bool WrapResponses { get; set; }
 
         [JsonProperty("wrapResponseMethods")]
-        public List<object> WrapResponseMethods { get; set; }
+        public string[] WrapResponseMethods { get; set; }
 
         [JsonProperty("generateResponseClasses")]
         public bool GenerateResponseClasses { get; set; }
@@ -179,7 +179,7 @@ namespace H.NSwag.Generator
         public string DateType { get; set; }
 
         [JsonProperty("jsonConverters")]
-        public object JsonConverters { get; set; }
+        public string[] JsonConverters { get; set; }
 
         [JsonProperty("anyType")]
         public string AnyType { get; set; }
@@ -224,10 +224,10 @@ namespace H.NSwag.Generator
         public bool GenerateDataAnnotations { get; set; }
 
         [JsonProperty("excludedTypeNames")]
-        public List<object> ExcludedTypeNames { get; set; }
+        public string[] ExcludedTypeNames { get; set; }
 
         [JsonProperty("excludedParameterNames")]
-        public List<object> ExcludedParameterNames { get; set; }
+        public string[] ExcludedParameterNames { get; set; }
 
         [JsonProperty("handleReferences")]
         public bool HandleReferences { get; set; }
@@ -263,7 +263,7 @@ namespace H.NSwag.Generator
         public bool GenerateNullableReferenceTypes { get; set; }
 
         [JsonProperty("templateDirectory")]
-        public object TemplateDirectory { get; set; }
+        public string TemplateDirectory { get; set; }
 
         [JsonProperty("typeNameGeneratorType")]
         public object TypeNameGeneratorType { get; set; }
