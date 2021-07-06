@@ -52,27 +52,46 @@ namespace H.NSwag.Generator
         {
         }
 
+        private static async Task<OpenApiDocument> GetOpenApiDocumentAsync(
+            FromDocument fromDocument,
+            string path,
+            CancellationToken cancellationToken = default)
+        {
+            var folder = Path.GetDirectoryName(path) ?? string.Empty;
+
+            var fromUrl = !string.IsNullOrWhiteSpace(fromDocument.Url);
+            var fromFile = fromUrl && !fromDocument.Url.StartsWith("http", StringComparison.OrdinalIgnoreCase);
+            if (fromUrl && !fromFile)
+            {
+                return await OpenApiDocument.FromUrlAsync(fromDocument.Url, cancellationToken).ConfigureAwait(false);
+            }
+
+            var json = fromFile
+                ? File.ReadAllText(Path.Combine(folder, fromDocument.Url))
+                : fromDocument.Json;
+            var isJson = json.StartsWith("{", StringComparison.OrdinalIgnoreCase);
+            
+            return isJson
+                ? await OpenApiDocument.FromJsonAsync(json, cancellationToken).ConfigureAwait(false)
+                : await OpenApiYamlDocument.FromYamlAsync(json, cancellationToken).ConfigureAwait(false);
+        }
+
         public static async Task<string> GenerateAsync(
             string path, 
             CancellationToken cancellationToken = default)
         {
             path = path ?? throw new ArgumentNullException(nameof(path));
 
-            var folder = Path.GetDirectoryName(path) ?? string.Empty;
             var json = File.ReadAllText(path);
             var document = 
                 JsonConvert.DeserializeObject<NSwagDocument>(json) ??
                 throw new InvalidOperationException("Document is null.");
             var settings = document.CodeGenerators.OpenApiToCSharpClient;
-            var fromDocument = document.DocumentGenerator.FromDocument;
+            var openApi = await GetOpenApiDocumentAsync(
+                document.DocumentGenerator.FromDocument, 
+                path, 
+                cancellationToken).ConfigureAwait(false);
 
-            var openApi = string.IsNullOrWhiteSpace(fromDocument.Url)
-                ? fromDocument.Json.StartsWith("{", StringComparison.OrdinalIgnoreCase)
-                    ? await OpenApiDocument.FromJsonAsync(fromDocument.Json, cancellationToken).ConfigureAwait(false)
-                    : await OpenApiYamlDocument.FromYamlAsync(fromDocument.Json, cancellationToken).ConfigureAwait(false)
-                : fromDocument.Url.StartsWith("http", StringComparison.OrdinalIgnoreCase)
-                    ? await OpenApiDocument.FromUrlAsync(fromDocument.Url, cancellationToken).ConfigureAwait(false)
-                    : await OpenApiDocument.FromFileAsync(Path.Combine(folder, fromDocument.Url), cancellationToken).ConfigureAwait(false);
             var generator = new CSharpClientGenerator(openApi, new CSharpClientGeneratorSettings
             {
                 ClassName = settings.ClassName,
