@@ -10,9 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{6E5BF389-3
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9CAA231D-7BE1-46C9-ACD6-EB2E569CEBEA}"
-	ProjectSection(SolutionItems) = preProject
-		src\tests\Directory.Build.props = src\tests\Directory.Build.props
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{94FE90BF-FA05-46C6-A207-6E454A236659}"
 	ProjectSection(SolutionItems) = preProject
