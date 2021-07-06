@@ -15,10 +15,8 @@ namespace H.NSwag.Generator.IntegrationTests
     [TestClass]
     public class NSwagGeneratorTests
     {
-        [TestMethod]
-        public async Task GenerateTest()
+        public async Task BaseGenerateTest(string text)
         {
-            var text = Resources.openapi1;
             var path = Path.GetTempFileName();
             File.WriteAllText(path, text);
 
@@ -28,9 +26,23 @@ namespace H.NSwag.Generator.IntegrationTests
         }
 
         [TestMethod]
+        public async Task GenerateFromYamlTest()
+        {
+            await BaseGenerateTest(Resources.openapi_from_yaml);
+        }
+
+        [TestMethod]
+        public async Task GenerateFromYamlFileTest()
+        {
+            File.WriteAllBytes(Path.Combine(Path.GetTempPath(), "openapi.yaml"), Resources.openapi);
+
+            await BaseGenerateTest(Resources.openapi_from_yaml_file);
+        }
+
+        [TestMethod]
         public void ExecuteTest()
         {
-            var text = Resources.openapi1;
+            var text = Resources.openapi_from_yaml;
             var path = Path.GetTempFileName() + ".nswag";
             File.WriteAllText(path, text);
 
