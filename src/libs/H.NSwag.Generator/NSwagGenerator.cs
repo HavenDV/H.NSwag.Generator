@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -15,10 +16,18 @@ namespace H.NSwag.Generator
     [Generator]
     public class NSwagGenerator : ISourceGenerator
     {
+        #region Properties
+
+        public Dictionary<string, OpenApiDocument> Cache { get; } = new();
+
+        #endregion
+
         #region Methods
 
-        public async void Execute(GeneratorExecutionContext context)
+        public void Execute(GeneratorExecutionContext context)
         {
+            var useCache = bool.Parse(GetGlobalOption(context, "UseCache") ?? bool.TrueString);
+
             foreach (var text in context.AdditionalFiles
                 .Where(static text => text.Path.EndsWith(
                     ".nswag", 
@@ -26,7 +35,10 @@ namespace H.NSwag.Generator
             {
                 try
                 {
-                    var source = await GenerateAsync(text.Path, context.CancellationToken).ConfigureAwait(false);
+                    var source = Task.Run(() => GenerateAsync(
+                        text.Path, 
+                        useCache ? Cache : null, 
+                        context.CancellationToken)).Result;
 
                     context.AddSource(
                         $"{Path.GetFileName(text.Path)}.cs", 
@@ -55,6 +67,7 @@ namespace H.NSwag.Generator
         private static async Task<OpenApiDocument> GetOpenApiDocumentAsync(
             FromDocument fromDocument,
             string path,
+            Dictionary<string, OpenApiDocument> cache,
             CancellationToken cancellationToken = default)
         {
             var folder = Path.GetDirectoryName(path) ?? string.Empty;
@@ -63,7 +76,18 @@ namespace H.NSwag.Generator
             var fromFile = fromUrl && !fromDocument.Url.StartsWith("http", StringComparison.OrdinalIgnoreCase);
             if (fromUrl && !fromFile)
             {
-                return await OpenApiDocument.FromUrlAsync(fromDocument.Url, cancellationToken).ConfigureAwait(false);
+                if (cache.TryGetValue(fromDocument.Url, out var value))
+                {
+                    return value;
+                }
+
+                var document = await OpenApiDocument.FromUrlAsync(
+                    fromDocument.Url, 
+                    cancellationToken).ConfigureAwait(false);
+
+                cache[fromDocument.Url] = document;
+
+                return document;
             }
 
             var json = fromFile
@@ -77,7 +101,8 @@ namespace H.NSwag.Generator
         }
 
         public static async Task<string> GenerateAsync(
-            string path, 
+            string path,
+            Dictionary<string, OpenApiDocument>? cache = null,
             CancellationToken cancellationToken = default)
         {
             path = path ?? throw new ArgumentNullException(nameof(path));
@@ -89,7 +114,8 @@ namespace H.NSwag.Generator
             var settings = document.CodeGenerators.OpenApiToCSharpClient;
             var openApi = await GetOpenApiDocumentAsync(
                 document.DocumentGenerator.FromDocument, 
-                path, 
+                path,
+                cache ?? new(),
                 cancellationToken).ConfigureAwait(false);
 
             var generator = new CSharpClientGenerator(openApi, new CSharpClientGeneratorSettings
@@ -179,6 +205,20 @@ namespace H.NSwag.Generator
             });
 
             return generator.GenerateFile();
+        }
+
+        #endregion
+
+        #region Utilities
+
+        private static string? GetGlobalOption(GeneratorExecutionContext context, string name)
+        {
+            return context.AnalyzerConfigOptions.GlobalOptions.TryGetValue(
+                $"build_property.{nameof(NSwagGenerator)}_{name}",
+                out var result) &&
+                !string.IsNullOrWhiteSpace(result)
+                ? result
+                : null;
         }
 
         #endregion
