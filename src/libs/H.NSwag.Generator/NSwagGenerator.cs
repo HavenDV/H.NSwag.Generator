@@ -18,7 +18,7 @@ namespace H.NSwag.Generator
     {
         #region Properties
 
-        public Dictionary<string, OpenApiDocument> Cache { get; } = new();
+        public Dictionary<string, string> Cache { get; } = new();
 
         #endregion
 
@@ -35,10 +35,19 @@ namespace H.NSwag.Generator
             {
                 try
                 {
-                    var source = Task.Run(() => GenerateAsync(
-                        text.Path, 
-                        useCache ? Cache : null, 
-                        context.CancellationToken)).Result;
+                    string source;
+                    if (useCache && 
+                        Cache.TryGetValue(text.Path, out var value))
+                    {
+                        source = value;
+                    }
+                    else
+                    {
+                        source = Task.Run(() => GenerateAsync(
+                            text.Path,
+                            context.CancellationToken)).Result;
+                        Cache[text.Path] = source;
+                    }
 
                     context.AddSource(
                         $"{Path.GetFileName(text.Path)}.cs", 
@@ -67,7 +76,6 @@ namespace H.NSwag.Generator
         private static async Task<OpenApiDocument> GetOpenApiDocumentAsync(
             FromDocument fromDocument,
             string path,
-            Dictionary<string, OpenApiDocument> cache,
             CancellationToken cancellationToken = default)
         {
             var folder = Path.GetDirectoryName(path) ?? string.Empty;
@@ -76,18 +84,9 @@ namespace H.NSwag.Generator
             var fromFile = fromUrl && !fromDocument.Url.StartsWith("http", StringComparison.OrdinalIgnoreCase);
             if (fromUrl && !fromFile)
             {
-                if (cache.TryGetValue(fromDocument.Url, out var value))
-                {
-                    return value;
-                }
-
-                var document = await OpenApiDocument.FromUrlAsync(
-                    fromDocument.Url, 
+                return await OpenApiDocument.FromUrlAsync(
+                    fromDocument.Url,
                     cancellationToken).ConfigureAwait(false);
-
-                cache[fromDocument.Url] = document;
-
-                return document;
             }
 
             var json = fromFile
@@ -102,7 +101,6 @@ namespace H.NSwag.Generator
 
         public static async Task<string> GenerateAsync(
             string path,
-            Dictionary<string, OpenApiDocument>? cache = null,
             CancellationToken cancellationToken = default)
         {
             path = path ?? throw new ArgumentNullException(nameof(path));
@@ -115,7 +113,6 @@ namespace H.NSwag.Generator
             var openApi = await GetOpenApiDocumentAsync(
                 document.DocumentGenerator.FromDocument, 
                 path,
-                cache ?? new(),
                 cancellationToken).ConfigureAwait(false);
 
             var generator = new CSharpClientGenerator(openApi, new CSharpClientGeneratorSettings
