@@ -17,7 +17,7 @@ namespace H.NSwag.Generator
     {
         #region Methods
 
-        public void Execute(GeneratorExecutionContext context)
+        public async void Execute(GeneratorExecutionContext context)
         {
             foreach (var text in context.AdditionalFiles
                 .Where(static text => text.Path.EndsWith(
@@ -26,7 +26,7 @@ namespace H.NSwag.Generator
             {
                 try
                 {
-                    var source = Task.Run(() => GenerateAsync(text.Path, context.CancellationToken)).Result;
+                    var source = await GenerateAsync(text.Path, context.CancellationToken).ConfigureAwait(false);
 
                     context.AddSource(
                         $"{Path.GetFileName(text.Path)}.cs", 
