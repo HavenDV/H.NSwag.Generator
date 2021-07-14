@@ -12,11 +12,12 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="H.Resources.Generator" Version="1.1.8">
+    <PackageReference Include="H.Resources.Generator" Version="1.2.18">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.10.0" />
+    <PackageReference Include="NSwag.Core" Version="13.11.3" />
   </ItemGroup>
 
   <ItemGroup>
