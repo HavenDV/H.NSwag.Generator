@@ -16,19 +16,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NSwag.CodeGeneration.CSharp" Version="13.11.3" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="10.4.4" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="NSwag.CodeGeneration" Version="13.11.3" PrivateAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="NSwag.CodeGeneration.CSharp" Version="13.13.2" PrivateAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="10.5.2" PrivateAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="NSwag.CodeGeneration" Version="13.13.2" PrivateAssets="all" GeneratePathProperty="true" />
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" PrivateAssets="all" GeneratePathProperty="true" />
     <PackageReference Include="Microsoft.CSharp" Version="4.4.1" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="Namotion.Reflection" Version="1.0.23" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="NJsonSchema" Version="10.4.4" PrivateAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="Namotion.Reflection" Version="2.0.3" PrivateAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="NJsonSchema" Version="10.5.2" PrivateAssets="all" GeneratePathProperty="true" />
     <PackageReference Include="DotLiquid" Version="2.0.385" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="NSwag.Core" Version="13.11.3" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="NJsonSchema.CodeGeneration" Version="10.4.4" PrivateAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="NSwag.Core" Version="13.13.2" PrivateAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="NJsonSchema.CodeGeneration" Version="10.5.2" PrivateAssets="all" GeneratePathProperty="true" />
 
-    <PackageReference Include="NSwag.Core.Yaml" Version="13.11.3" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="NJsonSchema.Yaml" Version="10.4.4" PrivateAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="NSwag.Core.Yaml" Version="13.13.2" PrivateAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="NJsonSchema.Yaml" Version="10.5.2" PrivateAssets="all" GeneratePathProperty="true" />
     <PackageReference Include="YamlDotNet" Version="9.1.4" PrivateAssets="all" GeneratePathProperty="true" />
 
     <None Include="$(PkgNSwag_CodeGeneration_CSharp)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
