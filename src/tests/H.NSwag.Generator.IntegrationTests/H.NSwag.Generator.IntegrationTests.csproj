@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net4.8;net5.0</TargetFrameworks>
+    <TargetFrameworks>net4.8;net6.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup Label="Base packages">
@@ -18,6 +18,11 @@
     </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.10.0" />
     <PackageReference Include="NSwag.Core" Version="13.11.3" />
+  </ItemGroup>
+
+  <ItemGroup Label="GlobalUsings">
+    <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
+    <Using Include="FluentAssertions" />
   </ItemGroup>
 
   <ItemGroup>
