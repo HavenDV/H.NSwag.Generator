@@ -9,7 +9,7 @@
 
   <PropertyGroup Label="Nuget">
     <BUILD_NUMBER Condition="'$(BUILD_NUMBER)' == ''">1</BUILD_NUMBER>
-    <Version>13.13.2.$(BUILD_NUMBER)</Version>
+    <Version>13.14.4.$(BUILD_NUMBER)</Version>
     <PackageReleaseNotes>$(PACKAGE_RELEASE_NOTES)</PackageReleaseNotes>
     <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Release' ">true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
@@ -34,7 +34,7 @@
   </PropertyGroup>
 
   <ItemGroup Label="Source Link">
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
