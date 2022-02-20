@@ -114,7 +114,6 @@ public class NSwagGenerator : ISourceGenerator
             ClassName = settings.ClassName,
             AdditionalContractNamespaceUsages = settings.AdditionalContractNamespaceUsages,
             AdditionalNamespaceUsages = settings.AdditionalNamespaceUsages,
-            ChecksumCacheEnabled = settings.ChecksumCacheEnabled,
             ClientBaseClass = settings.ClientBaseClass,
             ClientBaseInterface = settings.ClientBaseInterface,
             ClientClassAccessModifier = settings.ClientClassAccessModifier,
