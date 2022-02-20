@@ -31,7 +31,7 @@
     https://github.com/dotnet/roslyn/issues/52017#issuecomment-1046216200
     This automatically adds explicit and transient dependencies so that they are available at the time the generator is executed. 
   -->
-  <Target Name="GetDependencyTargetPaths" AfterTargets="ResolvePackageDependenciesForBuild">
+  <Target Name="AddGenerationTimeReferences" AfterTargets="ResolvePackageDependenciesForBuild">
     <ItemGroup>
       <None Include="@(ResolvedCompileFileDefinitions)" Pack="true" PackagePath="analyzers/dotnet/cs" />
     </ItemGroup>
