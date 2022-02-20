@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Newtonsoft.Json;
+using NJsonSchema.CodeGeneration.CSharp;
 using NSwag;
 using NSwag.CodeGeneration.CSharp;
 
@@ -154,6 +155,7 @@ public class NSwagGenerator : ISourceGenerator
                 DateTimeType = settings.DateTimeType,
                 DateType = settings.DateType,
                 DictionaryBaseType = settings.DictionaryBaseType,
+                JsonLibrary = (CSharpJsonLibrary)Enum.Parse(typeof(CSharpJsonLibrary), settings.JsonLibrary, true),
             },
             CodeGeneratorSettings =
             {
