@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <NoWarn>$(NoWarn);CA1014;CA1031</NoWarn>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <PropertyGroup Label="NuGet">
@@ -16,92 +15,26 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!--<PackageReference Include="NSwag.CodeGeneration.CSharp" Version="13.15.9" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="10.6.8" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="NSwag.CodeGeneration" Version="13.15.9" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="Namotion.Reflection" Version="2.0.10" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="NJsonSchema" Version="10.6.8" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="NSwag.Core" Version="13.15.9" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="NJsonSchema.CodeGeneration" Version="10.6.8" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="System.Text.Encodings.Web" Version="5.0.1" PrivateAssets="all" GeneratePathProperty="true" />
-    
-    <PackageReference Include="Fluid.Core" Version="2.2.14" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="1.1.1" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="Microsoft.Extensions.Primitives" Version="1.1.1" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="System.Memory" Version="4.5.4" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="System.Buffers" Version="4.5.1" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="Parlot" Version="0.0.23" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="TimeZoneConverter" Version="3.5.0" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="System.Text.Json" Version="5.0.2" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="5.0.0" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" PrivateAssets="all" GeneratePathProperty="true" />
-    
-    <PackageReference Include="NSwag.Core.Yaml" Version="13.15.9" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="NJsonSchema.Yaml" Version="10.6.8" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="YamlDotNet" Version="11.2.1" PrivateAssets="all" GeneratePathProperty="true" />-->
-
-    <!--<PackageReference Include="NETStandard.Library" Version="1.6.1" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="Microsoft.NETCore.Platforms" Version="1.1.0" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="Microsoft.NETCore.Targets" Version="1.1.0" PrivateAssets="all" GeneratePathProperty="true" />
-    <PackageReference Include="System.Runtime" Version="4.3.0" PrivateAssets="all" GeneratePathProperty="true" />-->
-    
-    <!--<None Include="$(PkgNSwag_CodeGeneration_CSharp)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
-    <None Include="$(PkgNJsonSchema_CodeGeneration_CSharp)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
-    <None Include="$(PkgNSwag_CodeGeneration)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
-    <None Include="$(PkgNewtonsoft_Json)\lib\netstandard1.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
-    <None Include="$(PkgNamotion_Reflection)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
-    <None Include="$(PkgNJsonSchema)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
-    <None Include="$(PkgNSwag_Core)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
-    <None Include="$(PkgNJsonSchema_CodeGeneration)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
-    <None Include="$(PkgSystem_Text_Encodings_Web)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
-    <None Include="$(PkgNSwag_Core_Yaml)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
-    <None Include="$(PkgNJsonSchema_Yaml)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
-    <None Include="$(PkgYamlDotNet)\lib\netstandard1.3\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
-    
-    <None Include="$(PkgFluid_Core)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
-    <None Include="$(PkgMicrosoft_CSharp)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
-    <None Include="$(PkgMicrosoft_Extensions_FileProviders_Abstractions)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
-    <None Include="$(PkgMicrosoft_Extensions_Primitives)\lib\netstandard1.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
-    <None Include="$(PkgSystem_Memory)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
-    <None Include="$(PkgSystem_Runtime_CompilerServices_Unsafe)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
-    <None Include="$(PkgSystem_Buffers)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
-    <None Include="$(PkgSystem_Numerics_Vectors)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
-    <None Include="$(PkgParlot)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
-    <None Include="$(PkgTimeZoneConverter)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
-    <None Include="$(PkgSystem_Text_Json)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
-    <None Include="$(PkgMicrosoft_Bcl_AsyncInterfaces)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
-    <None Include="$(PkgSystem_Threading_Tasks_Extensions)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />-->
-    
     <PackageReference Include="NSwag.CodeGeneration.CSharp" Version="13.15.9" PrivateAssets="all" />
     <PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="10.6.8" PrivateAssets="all" />
     <PackageReference Include="NSwag.Core.Yaml" Version="13.15.9" PrivateAssets="all" />
-    
+
     <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
     <None Include="H.NSwag.Generator.props" Pack="true" PackagePath="build" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.1.0" PrivateAssets="all" />
   </ItemGroup>
-  
-  <!--<PropertyGroup>
-    <GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
-  </PropertyGroup>-->
 
+  <!-- 
+    https://github.com/dotnet/roslyn/issues/52017#issuecomment-1046216200
+    This automatically adds explicit and transient dependencies so that they are available at the time the generator is executed. 
+  -->
   <Target Name="GetDependencyTargetPaths" AfterTargets="ResolvePackageDependenciesForBuild">
     <ItemGroup>
-      <!--<TargetPathWithTargetPlatformMoniker Include="@(ResolvedCompileFileDefinitions)" IncludeRuntimeDependency="false" />-->
       <None Include="@(ResolvedCompileFileDefinitions)" Pack="true" PackagePath="analyzers/dotnet/cs" />
     </ItemGroup>
-    <!--<Message Text="%(ResolvedCompileFileDefinitions.Identity)" Importance="high"/>-->
   </Target>
-  
+
 </Project>
