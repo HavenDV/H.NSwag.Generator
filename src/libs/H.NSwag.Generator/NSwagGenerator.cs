@@ -155,7 +155,9 @@ public class NSwagGenerator : ISourceGenerator
                 DateTimeType = settings.DateTimeType,
                 DateType = settings.DateType,
                 DictionaryBaseType = settings.DictionaryBaseType,
-                JsonLibrary = (CSharpJsonLibrary)Enum.Parse(typeof(CSharpJsonLibrary), settings.JsonLibrary, true),
+                JsonLibrary = Enum.TryParse<CSharpJsonLibrary>(settings.JsonLibrary, true, out var jsonLibrary)
+                    ? jsonLibrary
+                    : CSharpJsonLibrary.NewtonsoftJson,
             },
             CodeGeneratorSettings =
             {
