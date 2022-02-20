@@ -35,7 +35,7 @@ public class NSwagGeneratorTests
     [TestMethod]
     public void ExecuteTest()
     {
-        var text = Resources.openapi_from_yaml_nswag.AsString();
+        var text = Resources.openapi_from_url_nswag.AsString();
         var path = Path.GetTempFileName() + ".nswag";
         File.WriteAllText(path, text);
 
