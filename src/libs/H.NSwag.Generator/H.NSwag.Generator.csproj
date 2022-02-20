@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NSwag.CodeGeneration.CSharp" Version="13.15.9" PrivateAssets="all" GeneratePathProperty="true" />
+    <!--<PackageReference Include="NSwag.CodeGeneration.CSharp" Version="13.15.9" PrivateAssets="all" GeneratePathProperty="true" />
     <PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="10.6.8" PrivateAssets="all" GeneratePathProperty="true" />
     <PackageReference Include="NSwag.CodeGeneration" Version="13.15.9" PrivateAssets="all" GeneratePathProperty="true" />
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" PrivateAssets="all" GeneratePathProperty="true" />
@@ -69,11 +69,11 @@
     <None Include="$(PkgTimeZoneConverter)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
     <None Include="$(PkgSystem_Text_Json)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
     <None Include="$(PkgMicrosoft_Bcl_AsyncInterfaces)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
-    <None Include="$(PkgSystem_Threading_Tasks_Extensions)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
+    <None Include="$(PkgSystem_Threading_Tasks_Extensions)\lib\netstandard2.0\*.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />-->
     
-    <!--<PackageReference Include="NSwag.CodeGeneration.CSharp" Version="13.15.9" PrivateAssets="all" />
+    <PackageReference Include="NSwag.CodeGeneration.CSharp" Version="13.15.9" PrivateAssets="all" />
     <PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="10.6.8" PrivateAssets="all" />
-    <PackageReference Include="NSwag.Core.Yaml" Version="13.15.9" PrivateAssets="all" />-->
+    <PackageReference Include="NSwag.Core.Yaml" Version="13.15.9" PrivateAssets="all" />
     
     <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
     <None Include="H.NSwag.Generator.props" Pack="true" PackagePath="build" />
@@ -87,15 +87,15 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.1.0" PrivateAssets="all" />
   </ItemGroup>
   
-  <!--<PropertyGroup>
+  <PropertyGroup>
     <GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
-  </PropertyGroup>-->
+  </PropertyGroup>
 
-  <!--<Target Name="GetDependencyTargetPaths" AfterTargets="ResolvePackageDependenciesForBuild">
+  <Target Name="GetDependencyTargetPaths" AfterTargets="ResolvePackageDependenciesForBuild">
     <ItemGroup>
-      --><!--<TargetPathWithTargetPlatformMoniker Include="@(ResolvedCompileFileDefinitions)" IncludeRuntimeDependency="false" />--><!--
+      <TargetPathWithTargetPlatformMoniker Include="@(ResolvedCompileFileDefinitions)" IncludeRuntimeDependency="false" />
     </ItemGroup>
-    <Message Text="%(ResolvedCompileFileDefinitions.Identity)" Importance="high"/>
-  </Target>-->
+    <!--<Message Text="%(ResolvedCompileFileDefinitions.Identity)" Importance="high"/>-->
+  </Target>
   
 </Project>
