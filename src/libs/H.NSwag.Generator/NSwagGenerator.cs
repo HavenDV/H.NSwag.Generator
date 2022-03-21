@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using NJsonSchema.CodeGeneration.CSharp;
 using NSwag;
 using NSwag.CodeGeneration.CSharp;
+using NSwag.CodeGeneration.OperationNameGenerators;
 
 namespace H.NSwag.Generator;
 
@@ -126,6 +127,15 @@ public class NSwagGenerator : IIncrementalGenerator
         var generator = new CSharpClientGenerator(openApi, new CSharpClientGeneratorSettings
         {
             ClassName = settings.ClassName,
+            OperationNameGenerator = settings.OperationGenerationMode switch
+            {
+                "MultipleClientsFromOperationId" => new MultipleClientsFromOperationIdOperationNameGenerator(),
+                "MultipleClientsFromFirstTagAndPathSegmentsOperation" => new MultipleClientsFromFirstTagAndPathSegmentsOperationNameGenerator(),
+                "MultipleClientsFromPathSegments" => new MultipleClientsFromPathSegmentsOperationNameGenerator(),
+                "SingleClientFromOperationId" => new SingleClientFromOperationIdOperationNameGenerator(),
+                "SingleClientFromPathSegments" => new SingleClientFromPathSegmentsOperationNameGenerator(),
+                _ => throw new NotImplementedException($"OperationGenerationMode: {settings.OperationGenerationMode} is not implemented."),
+            },
             AdditionalContractNamespaceUsages = settings.AdditionalContractNamespaceUsages,
             AdditionalNamespaceUsages = settings.AdditionalNamespaceUsages,
             ClientBaseClass = settings.ClientBaseClass,
