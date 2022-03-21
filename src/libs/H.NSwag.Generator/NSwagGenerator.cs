@@ -1,5 +1,7 @@
-﻿using System.Text;
+﻿using System.Collections.Immutable;
+using System.Text;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Newtonsoft.Json;
 using NJsonSchema.CodeGeneration.CSharp;
@@ -9,7 +11,7 @@ using NSwag.CodeGeneration.CSharp;
 namespace H.NSwag.Generator;
 
 [Generator]
-public class NSwagGenerator : ISourceGenerator
+public class NSwagGenerator : IIncrementalGenerator
 {
     #region Properties
 
@@ -19,14 +21,29 @@ public class NSwagGenerator : ISourceGenerator
 
     #region Methods
 
-    public void Execute(GeneratorExecutionContext context)
+    public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        var useCache = bool.Parse(GetGlobalOption(context, "UseCache") ?? bool.TrueString);
-
-        foreach (var text in context.AdditionalFiles
+        var nswagFiles = context.AdditionalTextsProvider
             .Where(static text => text.Path.EndsWith(
                 ".nswag",
-                StringComparison.InvariantCultureIgnoreCase)))
+                StringComparison.InvariantCultureIgnoreCase))
+            .Collect();
+
+        context.RegisterSourceOutput(
+            context.CompilationProvider
+                .Combine(context.AnalyzerConfigOptionsProvider)
+                .Combine(nswagFiles),
+            (context, tuple) => Execute(tuple.Left.Right, tuple.Right, context));
+    }
+
+    private void Execute(
+        AnalyzerConfigOptionsProvider optionsProvider,
+        ImmutableArray<AdditionalText> texts,
+        SourceProductionContext context)
+    {
+        var useCache = bool.Parse(GetGlobalOption(optionsProvider, "UseCache") ?? bool.TrueString);
+
+        foreach (var text in texts)
         {
             try
             {
@@ -62,10 +79,6 @@ public class NSwagGenerator : ISourceGenerator
                         Location.None));
             }
         }
-    }
-
-    public void Initialize(GeneratorInitializationContext context)
-    {
     }
 
     private static async Task<OpenApiDocument> GetOpenApiDocumentAsync(
@@ -109,7 +122,7 @@ public class NSwagGenerator : ISourceGenerator
             document.DocumentGenerator.FromDocument,
             path,
             cancellationToken).ConfigureAwait(false);
-
+        
         var generator = new CSharpClientGenerator(openApi, new CSharpClientGeneratorSettings
         {
             ClassName = settings.ClassName,
@@ -205,9 +218,9 @@ public class NSwagGenerator : ISourceGenerator
 
     #region Utilities
 
-    private static string? GetGlobalOption(GeneratorExecutionContext context, string name)
+    private static string? GetGlobalOption(AnalyzerConfigOptionsProvider optionsProvider, string name)
     {
-        return context.AnalyzerConfigOptions.GlobalOptions.TryGetValue(
+        return optionsProvider.GlobalOptions.TryGetValue(
             $"build_property.{nameof(NSwagGenerator)}_{name}",
             out var result) &&
             !string.IsNullOrWhiteSpace(result)

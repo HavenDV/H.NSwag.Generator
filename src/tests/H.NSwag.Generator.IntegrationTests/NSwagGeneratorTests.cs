@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -64,9 +65,9 @@ namespace MyCode
             new CSharpCompilationOptions(OutputKind.ConsoleApplication));
 
         var generator = new NSwagGenerator();
-        var driver = (GeneratorDriver)CSharpGeneratorDriver.Create(
-            new ISourceGenerator[] { generator },
-            new AdditionalText[] { new CustomAdditionalText(path) });
+        var driver = (GeneratorDriver)CSharpGeneratorDriver
+            .Create(generator)
+            .AddAdditionalTexts(ImmutableArray.Create<AdditionalText>(new CustomAdditionalText(path)));
 
         driver.RunGeneratorsAndUpdateCompilation(
             inputCompilation,
