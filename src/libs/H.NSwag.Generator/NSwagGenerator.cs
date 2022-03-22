@@ -9,7 +9,7 @@ using NSwag;
 using NSwag.CodeGeneration.CSharp;
 using NSwag.CodeGeneration.OperationNameGenerators;
 
-namespace H.NSwag.Generator;
+namespace H.Generators;
 
 [Generator]
 public class NSwagGenerator : IIncrementalGenerator

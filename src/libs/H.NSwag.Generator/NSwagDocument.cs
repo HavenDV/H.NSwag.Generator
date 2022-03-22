@@ -5,7 +5,7 @@ using NJsonSchema.CodeGeneration.CSharp;
 
 #pragma warning disable
 
-namespace H.NSwag.Generator;
+namespace H.Generators;
 
 public class FromDocument
 {
