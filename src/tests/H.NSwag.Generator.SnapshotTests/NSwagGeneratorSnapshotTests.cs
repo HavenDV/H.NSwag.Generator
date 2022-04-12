@@ -6,7 +6,8 @@ public class NSwagGeneratorSnapshotTests : VerifyBase
     [TestMethod]
     public Task GeneratesWithoutNSwagFilesCorrectly()
     {
-        return this.CheckSource();
+        return this.CheckSourceAsync(
+            Array.Empty<CustomAdditionalText>());
     }
 
     [TestMethod]
@@ -16,8 +17,8 @@ public class NSwagGeneratorSnapshotTests : VerifyBase
         var text = Resources.openapi_from_yaml_nswag.AsString();
         File.WriteAllText(path, text);
         
-        return this.CheckSource(
-            new CustomAdditionalText(path, text));
+        return this.CheckSourceAsync(
+            new[] { new CustomAdditionalText(path, text) });
     }
 
     [TestMethod]
@@ -29,8 +30,8 @@ public class NSwagGeneratorSnapshotTests : VerifyBase
 
         File.WriteAllBytes(Path.Combine(Path.GetTempPath(), "openapi.yaml"), Resources.openapi_yaml.AsBytes());
 
-        return this.CheckSource(
-            new CustomAdditionalText(path, text));
+        return this.CheckSourceAsync(
+            new[] { new CustomAdditionalText(path, text) });
     }
 
     [TestMethod]
@@ -40,7 +41,7 @@ public class NSwagGeneratorSnapshotTests : VerifyBase
         var text = Resources.openapi_from_url_nswag.AsString();
         File.WriteAllText(path, text);
 
-        return this.CheckSource(
-            new CustomAdditionalText(path, text));
+        return this.CheckSourceAsync(
+            new[] { new CustomAdditionalText(path, text) });
     }
 }
