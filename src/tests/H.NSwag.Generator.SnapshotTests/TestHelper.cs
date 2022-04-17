@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Testing;
 
 namespace H.Generators.IntegrationTests;
 
@@ -11,25 +12,12 @@ public static class TestHelper
         AdditionalText[] additionalTexts,
         CancellationToken cancellationToken = default)
     {
-        var dotNetFolder = Path.GetDirectoryName(typeof(object).Assembly.Location) ?? string.Empty;
+        var referenceAssemblies = ReferenceAssemblies.Net.Net60
+            .WithPackages(ImmutableArray.Create(new PackageIdentity("Newtonsoft.Json", "13.0.1")));
+        var references = await referenceAssemblies.ResolveAsync(null, cancellationToken);
         var compilation = (Compilation)CSharpCompilation.Create(
             assemblyName: "Tests",
-            references: new[]
-            {
-                MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
-                MetadataReference.CreateFromFile(Path.Combine(dotNetFolder, "System.Runtime.dll")),
-                MetadataReference.CreateFromFile(Path.Combine(dotNetFolder, "System.Private.Uri.dll")),
-                MetadataReference.CreateFromFile(Path.Combine(dotNetFolder, "System.Net.Http.dll")),
-                MetadataReference.CreateFromFile(Path.Combine(dotNetFolder, "System.Linq.dll")),
-                MetadataReference.CreateFromFile(Path.Combine(dotNetFolder, "System.ObjectModel.dll")),
-                MetadataReference.CreateFromFile(Path.Combine(dotNetFolder, "System.Collections.dll")),
-                MetadataReference.CreateFromFile(Path.Combine(dotNetFolder, "System.Net.Primitives.dll")),
-                MetadataReference.CreateFromFile(Path.Combine(dotNetFolder, "System.Runtime.Serialization.Primitives.dll")),
-                MetadataReference.CreateFromFile(Path.Combine(dotNetFolder, "netstandard.dll")),
-                MetadataReference.CreateFromFile(Path.Combine(dotNetFolder, "System.Text.Json.dll")),
-                MetadataReference.CreateFromFile(typeof(Newtonsoft.Json.JsonSerializer).Assembly.Location),
-                MetadataReference.CreateFromFile(typeof(System.ComponentModel.DataAnnotations.KeyAttribute).Assembly.Location),
-            },
+            references: references,
             options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
         var generator = new NSwagGenerator();
         var driver = CSharpGeneratorDriver
