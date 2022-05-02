@@ -13,5 +13,13 @@ The generator generates code based on any .nswag file in the AdditionalFiles Ite
 </ItemGroup>
 ```
 
+### Global options
+Enable caching - suitable for cases where your openapi specification rarely changes or you get it via url.
+```xml
+<PropertyGroup>
+  <NSwagGenerator_UseCache>true</NSwagGenerator_UseCache>
+</PropertyGroup>
+```
+
 ### Contacts
 * [mail](mailto:havendv@gmail.com)

@@ -16,7 +16,7 @@ public class NSwagGenerator : IIncrementalGenerator
 {
     #region Properties
 
-    public Dictionary<string, string> Cache { get; } = new();
+    public static Dictionary<string, string> Cache { get; } = new();
 
     #endregion
 
@@ -34,15 +34,15 @@ public class NSwagGenerator : IIncrementalGenerator
             context.CompilationProvider
                 .Combine(context.AnalyzerConfigOptionsProvider)
                 .Combine(nswagFiles),
-            (context, tuple) => Execute(tuple.Left.Right, tuple.Right, context));
+            static (context, tuple) => Execute(tuple.Left.Right, tuple.Right, context));
     }
 
-    private void Execute(
+    private static void Execute(
         AnalyzerConfigOptionsProvider optionsProvider,
         ImmutableArray<AdditionalText> texts,
         SourceProductionContext context)
     {
-        var useCache = bool.Parse(GetGlobalOption(optionsProvider, "UseCache") ?? bool.TrueString);
+        var useCache = bool.Parse(GetGlobalOption(optionsProvider, "UseCache") ?? bool.FalseString);
 
         foreach (var text in texts)
         {
