@@ -24,17 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.1.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.2.0" PrivateAssets="all" />
+    <PackageReference Include="H.Generators.Extensions" Version="1.0.5" PrivateAssets="all" />
   </ItemGroup>
-
-  <!-- 
-    https://github.com/dotnet/roslyn/issues/52017#issuecomment-1046216200
-    This automatically adds explicit and transient dependencies so that they are available at the time the generator is executed. 
-  -->
-  <Target Name="AddGenerationTimeReferences" AfterTargets="ResolvePackageDependenciesForBuild">
-    <ItemGroup>
-      <None Include="@(ResolvedCompileFileDefinitions)" Pack="true" PackagePath="analyzers/dotnet/cs" />
-    </ItemGroup>
-  </Target>
 
 </Project>

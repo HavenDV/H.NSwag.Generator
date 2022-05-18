@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Text;
+using H.Generators.Extensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
@@ -14,6 +15,13 @@ namespace H.Generators;
 [Generator]
 public class NSwagGenerator : IIncrementalGenerator
 {
+    #region Constants
+
+    public const string Name = nameof(NSwagGenerator);
+    public const string Id = "NSG";
+
+    #endregion
+
     #region Properties
 
     public static Dictionary<string, string> Cache { get; } = new();
@@ -38,11 +46,11 @@ public class NSwagGenerator : IIncrementalGenerator
     }
 
     private static void Execute(
-        AnalyzerConfigOptionsProvider optionsProvider,
+        AnalyzerConfigOptionsProvider options,
         ImmutableArray<AdditionalText> texts,
         SourceProductionContext context)
     {
-        var useCache = bool.Parse(GetGlobalOption(optionsProvider, "UseCache") ?? bool.FalseString);
+        var useCache = bool.Parse(options.GetGlobalOption("UseCache", prefix: Name) ?? bool.FalseString);
 
         foreach (var text in texts)
         {
@@ -68,16 +76,10 @@ public class NSwagGenerator : IIncrementalGenerator
             }
             catch (Exception exception)
             {
-                context.ReportDiagnostic(
-                    Diagnostic.Create(
-                        new DiagnosticDescriptor(
-                            "NSG0001",
-                            "Exception: ",
-                            $"{exception}",
-                            "Usage",
-                            DiagnosticSeverity.Error,
-                            true),
-                        Location.None));
+                context.ReportException(
+                    id: "001",
+                    exception: exception,
+                    prefix: Id);
             }
         }
     }
@@ -222,20 +224,6 @@ public class NSwagGenerator : IIncrementalGenerator
         });
 
         return generator.GenerateFile();
-    }
-
-    #endregion
-
-    #region Utilities
-
-    private static string? GetGlobalOption(AnalyzerConfigOptionsProvider optionsProvider, string name)
-    {
-        return optionsProvider.GlobalOptions.TryGetValue(
-            $"build_property.{nameof(NSwagGenerator)}_{name}",
-            out var result) &&
-            !string.IsNullOrWhiteSpace(result)
-            ? result
-            : null;
     }
 
     #endregion
