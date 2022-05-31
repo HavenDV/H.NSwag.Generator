@@ -14,9 +14,9 @@
   <ItemGroup Label="Generator tests packages">
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing.MSTest" Version="1.1.1" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.2.0" />
-    <PackageReference Include="Verify.MSTest" Version="16.8.1" />
+    <PackageReference Include="Verify.MSTest" Version="16.9.0" />
     <PackageReference Include="Verify.SourceGenerators" Version="1.4.0" />
-    <PackageReference Include="H.Resources.Generator" Version="1.2.25">
+    <PackageReference Include="H.Resources.Generator" Version="1.2.27">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -26,6 +26,7 @@
     <PackageReference Include="NSwag.CodeGeneration.CSharp" Version="13.15.10" PrivateAssets="all" />
     <PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="10.6.10" PrivateAssets="all" />
     <PackageReference Include="NSwag.Core.Yaml" Version="13.15.10" PrivateAssets="all" />
+    <PackageReference Include="H.Generators.Extensions" Version="1.0.14" ExcludeAssets="build" />
   </ItemGroup>
 
   <ItemGroup Label="GlobalUsings">

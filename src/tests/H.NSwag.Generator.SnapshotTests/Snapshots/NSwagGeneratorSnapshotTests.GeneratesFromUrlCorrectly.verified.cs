@@ -35844,84 +35844,6 @@ namespace Dedoose.Apis
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class FieldValueDTO : System.ComponentModel.INotifyPropertyChanged
-    {
-        private System.Guid _descriptorId = default!;
-        private System.Guid _fieldId = default!;
-        private string? _value = default!;
-        private System.Guid? _optionId = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("descriptorId")]
-        public System.Guid DescriptorId
-        {
-            get { return _descriptorId; }
-
-            set
-            {
-                if (_descriptorId != value)
-                {
-                    _descriptorId = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        [System.Text.Json.Serialization.JsonPropertyName("fieldId")]
-        public System.Guid FieldId
-        {
-            get { return _fieldId; }
-
-            set
-            {
-                if (_fieldId != value)
-                {
-                    _fieldId = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        [System.Text.Json.Serialization.JsonPropertyName("value")]
-        public string? Value
-        {
-            get { return _value; }
-
-            set
-            {
-                if (_value != value)
-                {
-                    _value = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        [System.Text.Json.Serialization.JsonPropertyName("optionId")]
-        public System.Guid? OptionId
-        {
-            get { return _optionId; }
-
-            set
-            {
-                if (_optionId != value)
-                {
-                    _optionId = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        public event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
-
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string? propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-        }
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class FieldVO : System.ComponentModel.INotifyPropertyChanged
     {
         private System.Guid _fieldId = default!;
@@ -36032,6 +35954,84 @@ namespace Dedoose.Apis
                 if (_isActive != value)
                 {
                     _isActive = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        public event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
+
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string? propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class FieldValueDTO : System.ComponentModel.INotifyPropertyChanged
+    {
+        private System.Guid _descriptorId = default!;
+        private System.Guid _fieldId = default!;
+        private string? _value = default!;
+        private System.Guid? _optionId = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("descriptorId")]
+        public System.Guid DescriptorId
+        {
+            get { return _descriptorId; }
+
+            set
+            {
+                if (_descriptorId != value)
+                {
+                    _descriptorId = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        [System.Text.Json.Serialization.JsonPropertyName("fieldId")]
+        public System.Guid FieldId
+        {
+            get { return _fieldId; }
+
+            set
+            {
+                if (_fieldId != value)
+                {
+                    _fieldId = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        [System.Text.Json.Serialization.JsonPropertyName("value")]
+        public string? Value
+        {
+            get { return _value; }
+
+            set
+            {
+                if (_value != value)
+                {
+                    _value = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        [System.Text.Json.Serialization.JsonPropertyName("optionId")]
+        public System.Guid? OptionId
+        {
+            get { return _optionId; }
+
+            set
+            {
+                if (_optionId != value)
+                {
+                    _optionId = value;
                     RaisePropertyChanged();
                 }
             }
@@ -37350,6 +37350,52 @@ namespace Dedoose.Apis
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RSAWriteKeyInfo : System.ComponentModel.INotifyPropertyChanged
+    {
+        private string? _modulus = default!;
+        private string? _exponent = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("modulus")]
+        public string? Modulus
+        {
+            get { return _modulus; }
+
+            set
+            {
+                if (_modulus != value)
+                {
+                    _modulus = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        [System.Text.Json.Serialization.JsonPropertyName("exponent")]
+        public string? Exponent
+        {
+            get { return _exponent; }
+
+            set
+            {
+                if (_exponent != value)
+                {
+                    _exponent = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        public event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
+
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string? propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class Resource : System.ComponentModel.INotifyPropertyChanged
     {
         private string? _projectIdKey = default!;
@@ -37744,52 +37790,6 @@ namespace Dedoose.Apis
                 if (_created != value)
                 {
                     _created = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        public event System.ComponentModel.PropertyChangedEventHandler? PropertyChanged;
-
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string? propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-        }
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.15.10.0 (NJsonSchema v10.6.10.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class RSAWriteKeyInfo : System.ComponentModel.INotifyPropertyChanged
-    {
-        private string? _modulus = default!;
-        private string? _exponent = default!;
-
-        [System.Text.Json.Serialization.JsonPropertyName("modulus")]
-        public string? Modulus
-        {
-            get { return _modulus; }
-
-            set
-            {
-                if (_modulus != value)
-                {
-                    _modulus = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
-        [System.Text.Json.Serialization.JsonPropertyName("exponent")]
-        public string? Exponent
-        {
-            get { return _exponent; }
-
-            set
-            {
-                if (_exponent != value)
-                {
-                    _exponent = value;
                     RaisePropertyChanged();
                 }
             }
