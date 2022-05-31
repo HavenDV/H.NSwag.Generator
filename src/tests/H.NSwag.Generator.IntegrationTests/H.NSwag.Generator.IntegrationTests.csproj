@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\libs\H.NSwag.Generator\H.NSwag.Generator.csproj" OutputItemType="Analyzer" />
+    <ProjectReference Include="..\..\libs\H.NSwag.Generator\H.NSwag.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
 </Project>
