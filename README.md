@@ -7,6 +7,7 @@ Install-Package H.NSwag.Generator
 
 ### Usage
 The generator generates code based on any .nswag file in the AdditionalFiles ItemGroup.
+The generator will automatically detect all NSwag files inside the project directory, there is no need to add them manually.
 ```xml
 <ItemGroup>
   <AdditionalFiles Include="openapi.nswag" />

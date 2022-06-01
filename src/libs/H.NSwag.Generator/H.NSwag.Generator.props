@@ -4,4 +4,8 @@
     <CompilerVisibleProperty Include="NSwagGenerator_UseCache"/>
   </ItemGroup>
 
+  <ItemGroup>
+    <AdditionalFiles Include="**\*.nswag" />
+  </ItemGroup>
+
 </Project>
