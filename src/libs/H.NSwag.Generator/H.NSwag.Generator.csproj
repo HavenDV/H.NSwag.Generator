@@ -100,6 +100,9 @@
       <_SystemLibs Include="System.Threading.Timer" />
       <_SystemLibs Include="System.Xml.ReaderWriter" />
       <_SystemLibs Include="System.Xml.XDocument" />
+      
+      <!-- Fix for Reference assemblies should not be loaded for execution.  They can only be loaded in the Reflection-only loader context. (0x80131058)) -->
+      <_SystemLibs Include="System.Dynamic.Runtime" />
     </ItemGroup>
 
     <PropertyGroup>
