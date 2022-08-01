@@ -1,5 +1,9 @@
 ﻿<Project>
 
+  <PropertyGroup>
+    <WarningsAsErrors>$(WarningsAsErrors);NSG001</WarningsAsErrors>
+  </PropertyGroup>
+  
   <ItemGroup>
     <CompilerVisibleProperty Include="NSwagGenerator_UseCache"/>
   </ItemGroup>

@@ -20,7 +20,7 @@
     <PackageReference Include="NSwag.Core.Yaml" Version="13.15.10" PrivateAssets="all" />
     <PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="10.6.10" PrivateAssets="all" />
 
-    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" Link="Dependencies/%(FileName).dll" />
+    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
     <None Include="H.NSwag.Generator.props" Pack="true" PackagePath="build" />
   </ItemGroup>
 
@@ -29,4 +29,107 @@
     <PackageReference Include="H.Generators.Extensions" Version="1.7.4" PrivateAssets="all" />
   </ItemGroup>
 
+  <!-- 
+    https://github.com/dotnet/roslyn/issues/52017#issuecomment-1046216200
+    This automatically adds explicit and transient dependencies so that they are available at the time the generator is executed. 
+    Splitting to .netstandard 2.0 only is needed because of this issue: https://github.com/dotnet/roslyn/issues/60004
+  -->
+  <Target Name="AddGenerationTimeReferences" DependsOnTargets="ResolveReferences">
+    <ItemGroup>
+      <_SystemLibs Include="Microsoft.Bcl.AsyncInterfaces" />
+      <_SystemLibs Include="Microsoft.CodeAnalysis" />
+      <_SystemLibs Include="Microsoft.CodeAnalysis.CSharp" />
+      <_SystemLibs Include="Microsoft.CodeAnalysis.CSharp.Workspaces" />
+      <_SystemLibs Include="Microsoft.CodeAnalysis.Workspaces" />
+      <_SystemLibs Include="System.Buffers" />
+      <_SystemLibs Include="System.Collections.Immutable" />
+      <_SystemLibs Include="System.Composition.AttributedModel" />
+      <_SystemLibs Include="System.Composition.Convention" />
+      <_SystemLibs Include="System.Composition.Hosting" />
+      <_SystemLibs Include="System.Composition.Runtime" />
+      <_SystemLibs Include="System.Composition.TypedParts" />
+      <_SystemLibs Include="System.IO.Pipelines" />
+      <_SystemLibs Include="System.Memory" />
+      <_SystemLibs Include="System.Numerics.Vectors" />
+      <_SystemLibs Include="System.Reflection.Metadata" />
+      <_SystemLibs Include="System.Runtime.CompilerServices.Unsafe" />
+      <_SystemLibs Include="System.Text.Encoding.CodePages" />
+      <_SystemLibs Include="System.Threading.Tasks.Extensions" />
+
+      <_SystemLibs Include="Microsoft.NETCore.Platforms" />
+      <_SystemLibs Include="Microsoft.Win32.Primitives" />
+      <_SystemLibs Include="System.AppContext" />
+      <_SystemLibs Include="System.Collections" />
+      <_SystemLibs Include="System.Collections.Concurrent" />
+      <_SystemLibs Include="System.Console" />
+      <_SystemLibs Include="System.Diagnostics.Debug" />
+      <_SystemLibs Include="System.Diagnostics.Tools" />
+      <_SystemLibs Include="System.Diagnostics.Tracing" />
+      <_SystemLibs Include="System.Globalization" />
+      <_SystemLibs Include="System.Globalization.Calendars" />
+      <_SystemLibs Include="System.IO" />
+      <_SystemLibs Include="System.IO.Compression" />
+      <_SystemLibs Include="System.IO.Compression.ZipFile" />
+      <_SystemLibs Include="System.IO.FileSystem" />
+      <_SystemLibs Include="System.IO.FileSystem.Primitives" />
+      <_SystemLibs Include="System.Linq" />
+      <_SystemLibs Include="System.Linq.Expressions" />
+      <_SystemLibs Include="System.Net.Http" />
+      <_SystemLibs Include="System.Net.Primitives" />
+      <_SystemLibs Include="System.Net.Sockets" />
+      <_SystemLibs Include="System.ObjectModel" />
+      <_SystemLibs Include="System.Reflection" />
+      <_SystemLibs Include="System.Reflection.Extensions" />
+      <_SystemLibs Include="System.Reflection.Primitives" />
+      <_SystemLibs Include="System.Resources.ResourceManager" />
+      <_SystemLibs Include="System.Runtime" />
+      <_SystemLibs Include="System.Runtime.Extensions" />
+      <_SystemLibs Include="System.Runtime.Handles" />
+      <_SystemLibs Include="System.Runtime.InteropServices" />
+      <_SystemLibs Include="System.Runtime.InteropServices.RuntimeInformation" />
+      <_SystemLibs Include="System.Runtime.Numerics" />
+      <_SystemLibs Include="System.Security.Cryptography.Algorithms" />
+      <_SystemLibs Include="System.Security.Cryptography.Encoding" />
+      <_SystemLibs Include="System.Security.Cryptography.Primitives" />
+      <_SystemLibs Include="System.Security.Cryptography.X509Certificates" />
+      <_SystemLibs Include="System.Text.Encoding" />
+      <_SystemLibs Include="System.Text.Encoding.Extensions" />
+      <_SystemLibs Include="System.Text.RegularExpressions" />
+      <_SystemLibs Include="System.Threading" />
+      <_SystemLibs Include="System.Threading.Tasks" />
+      <_SystemLibs Include="System.Threading.Timer" />
+      <_SystemLibs Include="System.Xml.ReaderWriter" />
+      <_SystemLibs Include="System.Xml.XDocument" />
+    </ItemGroup>
+
+    <PropertyGroup>
+      <_SystemLibsProperty>@(_SystemLibs)</_SystemLibsProperty>
+      <_ResolvedCompileFileDefinitions>@(ResolvedCompileFileDefinitions)</_ResolvedCompileFileDefinitions>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ResolvedCompileFileDefinitionsWithoutSystem Include="%(ResolvedCompileFileDefinitions.Identity)" Condition="$(_SystemLibsProperty) != '' AND $(_ResolvedCompileFileDefinitions) != '' AND !$(_SystemLibsProperty.Contains(%(ResolvedCompileFileDefinitions.Filename)))" />
+    </ItemGroup>
+
+    <PropertyGroup>
+      <_ResolvedCompileFileDefinitionsWithoutSystem>@(ResolvedCompileFileDefinitionsWithoutSystem)</_ResolvedCompileFileDefinitionsWithoutSystem>
+      <NetStandard20Only>true</NetStandard20Only>
+    </PropertyGroup>
+
+    <ItemGroup Condition="$(NetStandard20Only)">
+      <None Include="@(ResolvedCompileFileDefinitionsWithoutSystem)" Pack="true" PackagePath="analyzers/dotnet/cs" />
+      <TargetPathWithTargetPlatformMoniker Include="@(ResolvedCompileFileDefinitionsWithoutSystem)" IncludeRuntimeDependency="false" />
+    </ItemGroup>
+
+    <ItemGroup Condition="!$(NetStandard20Only)">
+      <None Include="@(ResolvedCompileFileDefinitions)" Pack="true" PackagePath="analyzers/dotnet/cs" />
+      <!-- No need to include base dependencies here -->
+      <TargetPathWithTargetPlatformMoniker Include="@(ResolvedCompileFileDefinitionsWithoutSystem)" IncludeRuntimeDependency="false" />
+    </ItemGroup>
+
+    <Message Text="Added generation time reference: %(ResolvedCompileFileDefinitionsWithoutSystem.Identity)" Importance="high" Condition="$(NetStandard20Only) AND $(_ResolvedCompileFileDefinitions) != ''"/>
+    <Message Text="Recognized dependencies that do not use netstandard2.0. All dependencies will be added including System and Microsoft" Importance="high" Condition="!$(NetStandard20Only) AND $(_ResolvedCompileFileDefinitions) != ''"/>
+    <Message Text="Added generation time reference: %(ResolvedCompileFileDefinitions.Identity)" Importance="high" Condition="!$(NetStandard20Only) AND $(_ResolvedCompileFileDefinitions) != ''"/>
+  </Target>
+  
 </Project>
