@@ -4,7 +4,7 @@
   "documentGenerator": {
     "fromDocument": {
       "json": "",
-      "url": "http://dedoose.herokuapp.com/swagger/v1/swagger.json",
+      "url": "https://dedoose-rest-api.onrender.com/swagger/v1/swagger.json",
       "output": null,
       "newLineBehavior": "Auto"
     }

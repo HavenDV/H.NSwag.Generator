@@ -1,9 +1,5 @@
-﻿using System.Collections.Immutable;
-using System.Text;
-using H.Generators.Extensions;
+﻿using H.Generators.Extensions;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
 using Newtonsoft.Json;
 using NJsonSchema.CodeGeneration.CSharp;
 using NSwag;
@@ -32,56 +28,37 @@ public class NSwagGenerator : IIncrementalGenerator
 
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        var nswagFiles = context.AdditionalTextsProvider
-            .Where(static text => text.Path.EndsWith(
-                ".nswag",
-                StringComparison.InvariantCultureIgnoreCase))
-            .Collect();
-
-        context.RegisterSourceOutput(
-            context.CompilationProvider
-                .Combine(context.AnalyzerConfigOptionsProvider)
-                .Combine(nswagFiles),
-            static (context, tuple) => Execute(tuple.Left.Right, tuple.Right, context));
+        context.AdditionalTextsProvider
+            .Where(static text => text.Path.EndsWith(".nswag", StringComparison.InvariantCultureIgnoreCase))
+            .Combine(context.AnalyzerConfigOptionsProvider
+                .Select(static (x, _) => bool.Parse(x.GetGlobalOption("UseCache", prefix: Name) ?? bool.FalseString)))
+            .SelectAndReportExceptions(GetSourceCode, context, Id)
+            .AddSource(context);
     }
 
-    private static void Execute(
-        AnalyzerConfigOptionsProvider options,
-        ImmutableArray<AdditionalText> texts,
-        SourceProductionContext context)
+    private static FileWithName GetSourceCode(
+        (AdditionalText text, bool useCache) tuple,
+        CancellationToken cancellationToken = default)
     {
-        var useCache = bool.Parse(options.GetGlobalOption("UseCache", prefix: Name) ?? bool.FalseString);
-
-        foreach (var text in texts)
+        var (text, useCache) = tuple;
+        
+        string source;
+        if (useCache &&
+            Cache.TryGetValue(text.Path, out var value))
         {
-            try
-            {
-                string source;
-                if (useCache &&
-                    Cache.TryGetValue(text.Path, out var value))
-                {
-                    source = value;
-                }
-                else
-                {
-                    source = Task.Run(() => GenerateAsync(
-                        text.Path,
-                        context.CancellationToken)).Result;
-                    Cache[text.Path] = source;
-                }
-
-                context.AddSource(
-                    $"{Path.GetFileName(text.Path)}.cs",
-                    SourceText.From(source, Encoding.UTF8));
-            }
-            catch (Exception exception)
-            {
-                context.ReportException(
-                    id: "001",
-                    exception: exception,
-                    prefix: Id);
-            }
+            source = value;
         }
+        else
+        {
+            source = Task.Run(() => GenerateAsync(
+                text.Path,
+                cancellationToken), cancellationToken).Result;
+            Cache[text.Path] = source;
+        }
+
+        return new FileWithName(
+            Name: $"{Path.GetFileName(text.Path)}.cs",
+            Text: source);
     }
 
     private static async Task<OpenApiDocument> GetOpenApiDocumentAsync(
