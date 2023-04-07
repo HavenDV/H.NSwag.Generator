@@ -21,7 +21,7 @@
     <PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="10.8.0" PrivateAssets="all" />
 
     <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-    <None Include="H.NSwag.Generator.props" Pack="true" PackagePath="build" />
+    <None Include="$(AssemblyName).props" Pack="true" PackagePath="build" />
   </ItemGroup>
 
   <ItemGroup>
