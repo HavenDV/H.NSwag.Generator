@@ -5,10 +5,10 @@ using Microsoft.CodeAnalysis.Testing;
 
 namespace H.Generators.IntegrationTests;
 
-public static class TestHelper
+[TestClass]
+public partial class Tests : VerifyBase
 {
-    public static async Task CheckSourceAsync(
-        this VerifyBase verifier,
+    private async Task CheckSourceAsync(
         AdditionalText[] additionalTexts,
         CancellationToken cancellationToken = default)
     {
@@ -27,11 +27,11 @@ public static class TestHelper
         var diagnostics = compilation.GetDiagnostics(cancellationToken);
 
         await Task.WhenAll(
-            verifier
+            this
                 .Verify(diagnostics)
                 .UseDirectory("Snapshots")
                 .UseTextForParameters("Diagnostics"),
-            verifier
+            this
                 .Verify(driver)
                 .UseDirectory("Snapshots"));
     }

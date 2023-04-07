@@ -1,13 +1,14 @@
-﻿namespace H.Generators.IntegrationTests;
+﻿using Microsoft.CodeAnalysis;
 
-[TestClass]
-public class NSwagGeneratorSnapshotTests : VerifyBase
+namespace H.Generators.IntegrationTests;
+
+public partial class Tests
 {
     [TestMethod]
     public Task GeneratesWithoutNSwagFilesCorrectly()
     {
         return this.CheckSourceAsync(
-            Array.Empty<CustomAdditionalText>());
+            Array.Empty<AdditionalText>());
     }
 
     [TestMethod]
@@ -18,7 +19,7 @@ public class NSwagGeneratorSnapshotTests : VerifyBase
         File.WriteAllText(path, text);
         
         return this.CheckSourceAsync(
-            new[] { new CustomAdditionalText(path, text) });
+            new AdditionalText[] { new CustomAdditionalText(path, text) });
     }
 
     [TestMethod]
@@ -31,7 +32,7 @@ public class NSwagGeneratorSnapshotTests : VerifyBase
         File.WriteAllBytes(Path.Combine(Path.GetTempPath(), "openapi.yaml"), Resources.openapi_yaml.AsBytes());
 
         return this.CheckSourceAsync(
-            new[] { new CustomAdditionalText(path, text) });
+            new AdditionalText[] { new CustomAdditionalText(path, text) });
     }
 
     [TestMethod]
@@ -42,6 +43,6 @@ public class NSwagGeneratorSnapshotTests : VerifyBase
         File.WriteAllText(path, text);
 
         return this.CheckSourceAsync(
-            new[] { new CustomAdditionalText(path, text) });
+            new AdditionalText[] { new CustomAdditionalText(path, text) });
     }
 }
