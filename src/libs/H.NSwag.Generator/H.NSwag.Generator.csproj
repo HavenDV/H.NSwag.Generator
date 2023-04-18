@@ -15,7 +15,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Don't update until it's fixed: https://github.com/RicoSuter/NSwag/issues/4012 -->
     <PackageReference Include="NSwag.CodeGeneration.CSharp" Version="13.18.2" PrivateAssets="all" />
     <PackageReference Include="NSwag.Core.Yaml" Version="13.18.2" PrivateAssets="all" />
     <PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="10.8.0" PrivateAssets="all" />

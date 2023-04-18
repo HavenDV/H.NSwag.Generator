@@ -108,11 +108,18 @@ public class NSwagGenerator : IIncrementalGenerator
             ClassName = settings.ClassName,
             OperationNameGenerator = settings.OperationGenerationMode switch
             {
+                // should implement all options of NSwag.Commands.CodeGeneration.OperationGenerationMode 
+
                 "MultipleClientsFromOperationId" => new MultipleClientsFromOperationIdOperationNameGenerator(),
-                "MultipleClientsFromFirstTagAndPathSegmentsOperation" => new MultipleClientsFromFirstTagAndPathSegmentsOperationNameGenerator(),
                 "MultipleClientsFromPathSegments" => new MultipleClientsFromPathSegmentsOperationNameGenerator(),
+                // kept for backward compatibility
+                "MultipleClientsFromFirstTagAndPathSegmentsOperation" => new MultipleClientsFromFirstTagAndPathSegmentsOperationNameGenerator(),
+                "MultipleClientsFromFirstTagAndPathSegments" => new MultipleClientsFromFirstTagAndPathSegmentsOperationNameGenerator(),
+
+                "MultipleClientsFromFirstTagAndOperationId" => new MultipleClientsFromFirstTagAndOperationIdGenerator(),
                 "SingleClientFromOperationId" => new SingleClientFromOperationIdOperationNameGenerator(),
                 "SingleClientFromPathSegments" => new SingleClientFromPathSegmentsOperationNameGenerator(),
+                "MultipleClientsFromFirstTagAndOperationName" => new MultipleClientsFromFirstTagAndOperationNameGenerator(),
                 _ => throw new NotImplementedException($"OperationGenerationMode: {settings.OperationGenerationMode} is not implemented."),
             },
             AdditionalContractNamespaceUsages = settings.AdditionalContractNamespaceUsages,
@@ -128,6 +135,7 @@ public class NSwagGenerator : IIncrementalGenerator
             {
                 Namespace = settings.Namespace,
                 GenerateNullableReferenceTypes = settings.GenerateNullableReferenceTypes,
+                GenerateNativeRecords = settings.GenerateNativeRecords,
                 GenerateOptionalPropertiesAsNullable = settings.GenerateOptionalPropertiesAsNullable,
                 GenerateDataAnnotations = settings.GenerateDataAnnotations,
                 GenerateDefaultValues = settings.GenerateDefaultValues,
@@ -145,6 +153,7 @@ public class NSwagGenerator : IIncrementalGenerator
                 InlineNamedTuples = settings.InlineNamedTuples,
                 RequiredPropertiesMustBeDefined = settings.RequiredPropertiesMustBeDefined,
                 TypeAccessModifier = settings.TypeAccessModifier,
+                PropertySetterAccessModifier = settings.PropertySetterAccessModifier,
                 TimeType = settings.TimeType,
                 TemplateDirectory = settings.TemplateDirectory,
                 TimeSpanType = settings.TimeSpanType,
