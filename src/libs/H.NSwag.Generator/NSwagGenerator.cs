@@ -109,7 +109,7 @@ public class NSwagGenerator : IIncrementalGenerator
             OperationNameGenerator = settings.OperationGenerationMode switch
             {
                 // should implement all options of NSwag.Commands.CodeGeneration.OperationGenerationMode 
-                
+
                 "MultipleClientsFromOperationId" => new MultipleClientsFromOperationIdOperationNameGenerator(),
                 "MultipleClientsFromPathSegments" => new MultipleClientsFromPathSegmentsOperationNameGenerator(),
                 // kept for backward compatibility
