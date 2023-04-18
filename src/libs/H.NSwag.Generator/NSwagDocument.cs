@@ -92,6 +92,9 @@ public class OpenApiToCSharpClient
 
     [JsonProperty("typeAccessModifier")]
     public string TypeAccessModifier { get; set; }
+    
+    [JsonProperty("propertySetterAccessModifier")]
+    public string PropertySetterAccessModifier { get; set; }
 
     [JsonProperty("generateContractsOutput")]
     public bool GenerateContractsOutput { get; set; }
@@ -260,6 +263,9 @@ public class OpenApiToCSharpClient
 
     [JsonProperty("generateNullableReferenceTypes")]
     public bool GenerateNullableReferenceTypes { get; set; }
+
+    [JsonProperty("generateNativeRecords")]
+    public bool GenerateNativeRecords { get; set; }
 
     [JsonProperty("templateDirectory")]
     public string TemplateDirectory { get; set; }

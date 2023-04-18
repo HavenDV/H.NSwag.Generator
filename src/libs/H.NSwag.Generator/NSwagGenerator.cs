@@ -135,6 +135,7 @@ public class NSwagGenerator : IIncrementalGenerator
             {
                 Namespace = settings.Namespace,
                 GenerateNullableReferenceTypes = settings.GenerateNullableReferenceTypes,
+                GenerateNativeRecords = settings.GenerateNativeRecords,
                 GenerateOptionalPropertiesAsNullable = settings.GenerateOptionalPropertiesAsNullable,
                 GenerateDataAnnotations = settings.GenerateDataAnnotations,
                 GenerateDefaultValues = settings.GenerateDefaultValues,
@@ -152,6 +153,7 @@ public class NSwagGenerator : IIncrementalGenerator
                 InlineNamedTuples = settings.InlineNamedTuples,
                 RequiredPropertiesMustBeDefined = settings.RequiredPropertiesMustBeDefined,
                 TypeAccessModifier = settings.TypeAccessModifier,
+                PropertySetterAccessModifier = settings.PropertySetterAccessModifier,
                 TimeType = settings.TimeType,
                 TemplateDirectory = settings.TemplateDirectory,
                 TimeSpanType = settings.TimeSpanType,
