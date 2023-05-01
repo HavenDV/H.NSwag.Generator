@@ -41,7 +41,7 @@ public class NSwagGenerator : IIncrementalGenerator
         CancellationToken cancellationToken = default)
     {
         var (text, useCache) = tuple;
-        
+
         string source;
         if (useCache &&
             Cache.TryGetValue(text.Path, out var value))
@@ -87,6 +87,18 @@ public class NSwagGenerator : IIncrementalGenerator
             : await OpenApiYamlDocument.FromYamlAsync(json, cancellationToken).ConfigureAwait(false);
     }
 
+    private static string GetTemplateDirectoryPath(string path, string templateDirectory)
+    {
+        if (string.IsNullOrEmpty(templateDirectory))
+        {
+            return templateDirectory;
+        }
+
+        var folder = Path.GetDirectoryName(path) ?? string.Empty;
+
+        return Path.Combine(folder, templateDirectory);
+    }
+
     public static async Task<string> GenerateAsync(
         string path,
         CancellationToken cancellationToken = default)
@@ -102,7 +114,9 @@ public class NSwagGenerator : IIncrementalGenerator
             document.DocumentGenerator.FromDocument,
             path,
             cancellationToken).ConfigureAwait(false);
-        
+
+        var templateDirectoryPath = GetTemplateDirectoryPath(path, settings.TemplateDirectory);
+
         var generator = new CSharpClientGenerator(openApi, new CSharpClientGeneratorSettings
         {
             ClassName = settings.ClassName,
@@ -155,7 +169,7 @@ public class NSwagGenerator : IIncrementalGenerator
                 TypeAccessModifier = settings.TypeAccessModifier,
                 PropertySetterAccessModifier = settings.PropertySetterAccessModifier,
                 TimeType = settings.TimeType,
-                TemplateDirectory = settings.TemplateDirectory,
+                TemplateDirectory = templateDirectoryPath,
                 TimeSpanType = settings.TimeSpanType,
                 JsonConverters = settings.JsonConverters,
                 AnyType = settings.AnyType,
@@ -175,7 +189,7 @@ public class NSwagGenerator : IIncrementalGenerator
                 ExcludedTypeNames = settings.ExcludedTypeNames,
                 InlineNamedAny = settings.InlineNamedAny,
                 GenerateDefaultValues = settings.GenerateDefaultValues,
-                TemplateDirectory = settings.TemplateDirectory,
+                TemplateDirectory = templateDirectoryPath,
             },
             UseBaseUrl = settings.UseBaseUrl,
             UseHttpClientCreationMethod = settings.UseHttpClientCreationMethod,
