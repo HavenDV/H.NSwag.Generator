@@ -190,6 +190,7 @@ public class NSwagGenerator : IIncrementalGenerator
                 InlineNamedAny = settings.InlineNamedAny,
                 GenerateDefaultValues = settings.GenerateDefaultValues,
                 TemplateDirectory = templateDirectoryPath,
+                PropertyNameGenerator = new CSharpPropertyNameGenerator(),
             },
             UseBaseUrl = settings.UseBaseUrl,
             UseHttpClientCreationMethod = settings.UseHttpClientCreationMethod,
