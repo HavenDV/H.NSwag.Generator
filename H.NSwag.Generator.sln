@@ -18,6 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
 		LICENSE = LICENSE
 		README.md = README.md
+		.github\workflows\pull-request.yml = .github\workflows\pull-request.yml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H.NSwag.Generator.SnapshotTests", "src\tests\H.NSwag.Generator.SnapshotTests\H.NSwag.Generator.SnapshotTests.csproj", "{A70EF69D-A519-4571-81BC-E066A1DAED27}"
