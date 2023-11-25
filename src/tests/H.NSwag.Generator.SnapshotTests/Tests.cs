@@ -5,16 +5,16 @@ namespace H.Generators.IntegrationTests;
 public partial class Tests
 {
     [TestMethod]
-    public Task GeneratesWithoutNSwagFilesCorrectly()
+    public Task Empty()
     {
         return this.CheckSourceAsync(
             Array.Empty<AdditionalText>());
     }
 
     [TestMethod]
-    public Task GeneratesFromYamlCorrectly()
+    public Task InsideYaml()
     {
-        var path = Path.Combine(Path.GetTempPath(), $"{nameof(GeneratesFromYamlCorrectly)}.nswag");
+        var path = Path.Combine(Path.GetTempPath(), $"{nameof(InsideYaml)}.nswag");
         var text = Resources.openapi_from_yaml_nswag.AsString();
         File.WriteAllText(path, text);
         
@@ -23,9 +23,9 @@ public partial class Tests
     }
 
     [TestMethod]
-    public Task GeneratesFromYamlFileCorrectly()
+    public Task YamlWithLocalFile()
     {
-        var path = Path.Combine(Path.GetTempPath(), $"{nameof(GeneratesFromYamlFileCorrectly)}.nswag");
+        var path = Path.Combine(Path.GetTempPath(), $"{nameof(YamlWithLocalFile)}.nswag");
         var text = Resources.openapi_from_yaml_nswag.AsString();
         File.WriteAllText(path, text);
 
@@ -36,9 +36,9 @@ public partial class Tests
     }
 
     [TestMethod]
-    public Task GeneratesFromUrlCorrectly()
+    public Task YamlWithUrl()
     {
-        var path = Path.Combine(Path.GetTempPath(), $"{nameof(GeneratesFromUrlCorrectly)}.nswag");
+        var path = Path.Combine(Path.GetTempPath(), $"{nameof(YamlWithUrl)}.nswag");
         var text = Resources.openapi_from_url_nswag.AsString();
         File.WriteAllText(path, text);
 

@@ -3,17 +3,11 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace H.Generators.IntegrationTests;
 
-public class CustomAdditionalText : AdditionalText
+public class CustomAdditionalText(string path, string text) : AdditionalText
 {
-    public string Text { get; }
+    public string Text { get; } = text;
 
-    public override string Path { get; }
-
-    public CustomAdditionalText(string path, string text)
-    {
-        Path = path;
-        Text = text;
-    }
+    public override string Path { get; } = path;
 
     public override SourceText GetText(CancellationToken cancellationToken = default)
     {

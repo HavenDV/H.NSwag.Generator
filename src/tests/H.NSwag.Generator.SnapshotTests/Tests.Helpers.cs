@@ -1,4 +1,6 @@
 ﻿using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
+using H.Generators.Tests.Extensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Testing;
@@ -10,6 +12,7 @@ public partial class Tests : VerifyBase
 {
     private async Task CheckSourceAsync(
         AdditionalText[] additionalTexts,
+        [CallerMemberName] string? callerName = null,
         CancellationToken cancellationToken = default)
     {
         var referenceAssemblies = ReferenceAssemblies.Net.Net60
@@ -27,12 +30,13 @@ public partial class Tests : VerifyBase
         var diagnostics = compilation.GetDiagnostics(cancellationToken);
 
         await Task.WhenAll(
-            this
-                .Verify(diagnostics)
-                .UseDirectory("Snapshots")
-                .UseTextForParameters("Diagnostics"),
-            this
-                .Verify(driver)
-                .UseDirectory("Snapshots"));
+            Verify(diagnostics.NormalizeLocations())
+                .UseDirectory($"Snapshots/{callerName}")
+                .AutoVerify()
+                .UseTextForParameters($"Diagnostics"),
+            Verify(driver)
+                .UseDirectory($"Snapshots/{callerName}")
+                .AutoVerify()
+                );
     }
 }
