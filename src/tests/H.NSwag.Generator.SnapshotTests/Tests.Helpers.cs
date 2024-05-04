@@ -15,8 +15,8 @@ public partial class Tests : VerifyBase
         [CallerMemberName] string? callerName = null,
         CancellationToken cancellationToken = default)
     {
-        var referenceAssemblies = ReferenceAssemblies.Net.Net60
-            .WithPackages(ImmutableArray.Create(new PackageIdentity("Newtonsoft.Json", "13.0.1")));
+        var referenceAssemblies = LatestReferenceAssemblies.Net80
+            .WithPackages([new PackageIdentity("Newtonsoft.Json", "13.0.1")]);
         var references = await referenceAssemblies.ResolveAsync(null, cancellationToken);
         var compilation = (Compilation)CSharpCompilation.Create(
             assemblyName: "Tests",
