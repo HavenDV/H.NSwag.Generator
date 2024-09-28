@@ -15,9 +15,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NSwag.CodeGeneration.CSharp" Version="14.0.7" PrivateAssets="all" />
-    <PackageReference Include="NSwag.Core.Yaml" Version="14.0.7" PrivateAssets="all" />
-    <PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="11.0.0" PrivateAssets="all" />
+    <PackageReference Include="NSwag.CodeGeneration.CSharp" Version="14.1.0" PrivateAssets="all" />
+    <PackageReference Include="NSwag.Core.Yaml" Version="14.1.0" PrivateAssets="all" />
+    <PackageReference Include="NJsonSchema.CodeGeneration.CSharp" Version="11.0.2" PrivateAssets="all" />
 
     <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
     <None Include="$(AssemblyName).props" Pack="true" PackagePath="build" />
