@@ -6,6 +6,10 @@ Install-Package H.NSwag.Generator
 ```
 
 ### Usage
+The generator bundles NSwag 14.7.1 and NJsonSchema 11.6.1; no separate NSwag CLI
+or MSBuild generation target is required. Generated response-body reads propagate
+caller cancellation on .NET 5 and later.
+
 The generator generates code based on any .nswag file in the AdditionalFiles ItemGroup.
 The generator will automatically detect all NSwag files inside the project directory, there is no need to add them manually.
 ```xml

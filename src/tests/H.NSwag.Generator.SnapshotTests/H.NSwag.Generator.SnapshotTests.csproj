@@ -18,6 +18,8 @@
   </ItemGroup>
 
   <ItemGroup Label="Generator tests packages">
+    <PackageReference Include="NSwag.CodeGeneration.CSharp" Version="14.7.1" PrivateAssets="all" />
+    <PackageReference Include="NSwag.Core.Yaml" Version="14.7.1" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing.MSTest" Version="1.1.1" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.9.2" />
     <PackageReference Include="Verify.MSTest" Version="24.1.0" />
